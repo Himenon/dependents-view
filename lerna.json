@@ -1,0 +1,12 @@
+{
+  "command": {
+    "version": {
+      "conventionalCommits": true,
+      "changelogPreset": "angular-all",
+      "message": "chore(release): release"
+    }
+  },
+  "version": "independent",
+  "npmClient": "yarn",
+  "packages": ["."]
+}
