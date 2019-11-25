@@ -7,19 +7,18 @@ const filterPackageName = (inputName: string | undefined, dependencySet: Depende
     return dependencySet;
   }
   const filterName = inputName.toUpperCase();
-  const filteredPackageName = Object.keys(dependencySet).filter(pkgName => pkgName.toUpperCase().indexOf(filterName) > -1);
-  return filteredPackageName.reduce((filteredDependencySet, name) => {
-    return { ...filteredDependencySet, [name]: dependencySet[name] };
-  }, {});
+  return {
+    libraries: dependencySet.libraries.filter(lib => lib.packageName.toUpperCase().indexOf(filterName) > -1),
+  };
 };
 
 export const reducer = (state: State, action: ActionTypes): State => {
   switch (action.type) {
     case "UPDATE_DEPENDENCY_NAME": {
-      return { ...state, name: action.name };
+      return { ...state, sourcePath: action.sourcePath };
     }
     case "UPDATE_SEARCH_PACKAGE_NAME": {
-      return { ...state, searchPackageName: action.name, displayDependencyList: filterPackageName(action.name, state.deps) };
+      return { ...state, searchPackageName: action.sourcePath, displayDependencyList: filterPackageName(action.sourcePath, state.deps) };
     }
     default:
       return state;
@@ -28,6 +27,6 @@ export const reducer = (state: State, action: ActionTypes): State => {
 
 export type Reducer = [typeof reducer, State];
 
-export const createReducer = (name: string | undefined = DEFAULT_STATE.name): Reducer => {
-  return [reducer, { ...DEFAULT_STATE, name }];
+export const createReducer = (sourcePath: string | undefined = DEFAULT_STATE.sourcePath): Reducer => {
+  return [reducer, { ...DEFAULT_STATE, sourcePath }];
 };

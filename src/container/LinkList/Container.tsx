@@ -6,12 +6,12 @@ export const generateProps = (store: Store): LinkList.Props => {
     heading: {
       children: "Package List",
     },
-    links: Object.keys(store.displayDependencyList).map(name => {
+    links: store.libraries.map(lib => {
       return {
-        href: process.env.PUBLIC_PATH + "?name=" + name,
-        children: name,
+        href: process.env.PUBLIC_PATH + "?sourcePath=" + lib.sourceUrl,
+        children: lib.packageName,
         onClick: () => {
-          store.setTargetDependency(name);
+          store.setTargetDependencySourceUrl(lib.sourceUrl);
         },
       };
     }),

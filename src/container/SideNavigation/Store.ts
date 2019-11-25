@@ -3,13 +3,13 @@ import * as Domain from "@app/domain";
 export const generateStore = (domainStores: Domain.Stores) => {
   return {
     depList: Object.keys(domainStores.app.state.deps),
-    setTargetDependency: (name: string | undefined) => {
-      domainStores.app.dispatch({ type: "UPDATE_DEPENDENCY_NAME", name });
+    setTargetDependencySourcePath: (name: string | undefined) => {
+      domainStores.app.dispatch({ type: "UPDATE_DEPENDENCY_NAME", sourcePath: name });
     },
-    displayDependencyList: domainStores.app.state.displayDependencyList,
+    libraries: domainStores.app.state.displayDependencyList.libraries,
     searchPackageName: domainStores.app.state.searchPackageName,
-    updateSearchPackageName: (name: string) => {
-      domainStores.app.dispatch({ type: "UPDATE_SEARCH_PACKAGE_NAME", name });
+    updateSearchPackageSourcePath: (name: string) => {
+      domainStores.app.dispatch({ type: "UPDATE_SEARCH_PACKAGE_NAME", sourcePath: name });
     },
   };
 };

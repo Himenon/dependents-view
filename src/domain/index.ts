@@ -12,8 +12,8 @@ export interface Stores {
   };
 }
 
-export const createReducers = (name?: string): Reducers => {
+export const createReducers = (sourcePath?: string): Reducers => {
   return {
-    app: App.createReducer(name),
+    app: App.createReducer(sourcePath),
   };
 };

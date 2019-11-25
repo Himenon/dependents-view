@@ -1,4 +1,4 @@
-export interface StockInfo {
+export interface GitHubRepository {
   filename: string; // localのfilename
   sourceUrl: string; // GHE上のpath
   repoName: string; // repository name
@@ -6,9 +6,9 @@ export interface StockInfo {
   branch: string; // branch
 }
 
-export interface ExtractPackageJsonResult {
+export interface ExtractPackageJson {
   createdAt: string;
-  packageJsonList: StockInfo[];
+  repositories: GitHubRepository[];
 }
 
 export interface DependencyData {
@@ -23,17 +23,18 @@ export interface DependencyData {
   required: string; // using version
 }
 
+export interface Library {
+  packageName: string;
+  latest: string;
+  sourceUrl: string;
+  description: string;
+  repoName: string;
+  repoUrl: string;
+  createdAt: string;
+  dependencies: DependencyData[];
+  devDependencies: DependencyData[];
+}
+
 export interface DependencySet {
-  [pkgName: string]:
-    | {
-        latest: string;
-        sourceUrl: string;
-        description: string;
-        repoName: string;
-        repoUrl: string;
-        createdAt: string;
-        dependencies: DependencyData[];
-        devDependencies: DependencyData[];
-      }
-    | undefined;
+  libraries: Library[];
 }

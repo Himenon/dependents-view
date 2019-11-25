@@ -2,23 +2,36 @@ import * as Octokit from "@octokit/rest";
 import * as fs from "fs";
 import { PackageJson } from "type-fest";
 import * as path from "path";
-import { ExtractPackageJsonResult } from "@app/interface";
+import { ExtractPackageJson } from "@app/interface";
 import * as Constants from "./Constants";
+
+export const wait = async (ms: number) => {
+  const promise = new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
+  return promise;
+};
 
 const github = new Octokit({
   baseUrl: Constants.GITHUB_BASE_URL,
-  token: process.env.GITHUB_TOKEN,
+  // https://developer.github.com/v3/search/#rate-limit
+  auth: process.env.GITHUB_TOKEN,
 });
 
-export const getRepository = async (org: string) => {
-  const list = await github.repos.listForOrg({
-    org,
+export const getRepository = async (username: string) => {
+  const list = await github.repos.listForUser({
+    username,
     per_page: 100,
   });
-  return list.data.filter(data => !data.archived && !Constants.EXCLUDE_REPOSITORY_FULL_NAMES.includes(data.full_name));
+
+  const data: Octokit.ReposListForOrgResponseItem[] = list.data;
+  return data.filter(data => !data.archived && !Constants.EXCLUDE_REPOSITORY_FULL_NAMES.includes(data.full_name));
 };
 
 export const searchPackageJson = async (repo: string) => {
+  console.log(`Search: ${repo}`);
   const query = {
     filename: "package.json",
     repo: repo,
@@ -51,19 +64,18 @@ export const getPackageJson = async (owner: string, repo: string, filepath: stri
 };
 
 const main = async () => {
-  const owners = Constants.OWNERS;
-  const result: ExtractPackageJsonResult = { createdAt: new Date().toISOString(), packageJsonList: [] };
-  const promises = owners.map(async owner => {
+  const result: ExtractPackageJson = { createdAt: new Date().toISOString(), repositories: [] };
+  const promises = Constants.OWNERS.map(async owner => {
     const repos = await getRepository(owner);
-    const promises2 = repos.map(async repo => {
+    for (const repo of repos) {
       const data = await searchPackageJson(repo.full_name);
-      const promises3 = data.items.map(async source => {
+      for (const source of data.items) {
         if (path.basename(source.path) !== "package.json") {
           return;
         }
         const pkgJson = await getPackageJson(owner, repo.name, source.path);
         const basename = path.join(owner, repo.name, source.path);
-        result.packageJsonList.push({
+        result.repositories.push({
           filename: basename,
           sourceUrl: pkgJson.htmlUrl,
           repoName: repo.full_name,
@@ -73,10 +85,8 @@ const main = async () => {
         const filename = path.join(Constants.SAVE_DIR, basename);
         fs.mkdirSync(path.dirname(filename), { recursive: true });
         fs.writeFileSync(filename, JSON.stringify(pkgJson.data, null, 2), { encoding: "utf-8" });
-      });
-      return Promise.all(promises3);
-    });
-    return Promise.all(promises2);
+      }
+    }
   });
   await Promise.all(promises).then(() => {
     console.log(`Save: ${Constants.PKG_DETAILS}`);

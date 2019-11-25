@@ -7,16 +7,16 @@ export const generateProps = (store: Store): SideNavigation.Props => {
       children: "Package List",
       href: "/",
       onClick: () => {
-        store.setTargetDependency(undefined);
+        store.setTargetDependencySourcePath(undefined);
       },
     },
-    links: Object.keys(store.displayDependencyList).map(name => {
+    links: store.libraries.map(lib => {
       return {
-        href: process.env.PUBLIC_PATH + "?name=" + name,
-        children: name,
+        href: process.env.PUBLIC_PATH + "?sourcePath=" + lib.sourceUrl,
+        children: lib.packageName,
         replace: false,
         onClick: () => {
-          store.setTargetDependency(name);
+          store.setTargetDependencySourcePath(lib.sourceUrl);
         },
       };
     }),
@@ -26,7 +26,7 @@ export const generateProps = (store: Store): SideNavigation.Props => {
       "aria-label": "search package name",
       value: store.searchPackageName,
       onChange: event => {
-        store.updateSearchPackageName(event.currentTarget.value);
+        store.updateSearchPackageSourcePath(event.currentTarget.value);
       },
     },
   };
