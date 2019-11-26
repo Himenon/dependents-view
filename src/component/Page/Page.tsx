@@ -17,7 +17,7 @@ const Page = ({ dependencyTableList, sideNavigation, linkList, ...props }: PageP
       <Box className={classNames("border d-flex lex-wrap height-fit")}>
         <SideNavigation.Component {...sideNavigation} />
         <Box className={classNames("position-relative")} style={{ left: 360, width: "calc(100% - 360px)" }}>
-          <Box className={classNames("p-5 border flex-auto position-relative")}>
+          <Box className={classNames("p-5 border flex-auto position-relative overflow-y-hidden")}>
             {dependencyTableList ? <DependencyTableList.Component {...dependencyTableList} /> : <LinkList.Component {...linkList} />}
           </Box>
         </Box>
