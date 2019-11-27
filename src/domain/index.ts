@@ -12,8 +12,8 @@ export interface Stores {
   };
 }
 
-export const createReducers = (sourcePath?: string): Reducers => {
+export const createReducers = (searchParams?: App.State["searchParams"]): Reducers => {
   return {
-    app: App.createReducer(sourcePath),
+    app: App.createReducer(searchParams),
   };
 };

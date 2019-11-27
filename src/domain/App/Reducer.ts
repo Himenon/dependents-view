@@ -1,24 +1,11 @@
 import { ActionTypes } from "./Action";
 import { DEFAULT_STATE, State } from "./State";
-import { DependencySet } from "@app/interface";
-
-const filterPackageName = (inputName: string | undefined, dependencySet: DependencySet): DependencySet => {
-  if (!inputName || inputName === "") {
-    return dependencySet;
-  }
-  const filterName = inputName.toUpperCase();
-  return {
-    libraries: dependencySet.libraries.filter(lib => lib.packageName.toUpperCase().indexOf(filterName) > -1),
-  };
-};
+import { searchParamsFilter } from "./Filter";
 
 export const reducer = (state: State, action: ActionTypes): State => {
   switch (action.type) {
-    case "UPDATE_DEPENDENCY_NAME": {
-      return { ...state, sourcePath: action.sourcePath };
-    }
-    case "UPDATE_SEARCH_PACKAGE_NAME": {
-      return { ...state, searchPackageName: action.sourcePath, displayDependencyList: filterPackageName(action.sourcePath, state.deps) };
+    case "UPDATE_SEARCH_PARAMS": {
+      return searchParamsFilter(state, action.searchParams);
     }
     default:
       return state;
@@ -27,6 +14,6 @@ export const reducer = (state: State, action: ActionTypes): State => {
 
 export type Reducer = [typeof reducer, State];
 
-export const createReducer = (sourcePath: string | undefined = DEFAULT_STATE.sourcePath): Reducer => {
-  return [reducer, { ...DEFAULT_STATE, sourcePath }];
+export const createReducer = (searchParams: State["searchParams"] = DEFAULT_STATE.searchParams): Reducer => {
+  return [reducer, { ...DEFAULT_STATE, searchParams }];
 };

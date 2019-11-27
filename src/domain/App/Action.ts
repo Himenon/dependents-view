@@ -1,15 +1,11 @@
 import * as React from "react";
+import { State } from "./State";
 
-export interface UpdateDependencyName {
-  type: "UPDATE_DEPENDENCY_NAME";
-  sourcePath: string | undefined;
+export interface UpdateSearchParams {
+  type: "UPDATE_SEARCH_PARAMS";
+  searchParams: State["searchParams"];
 }
 
-export interface SearchPackageName {
-  type: "UPDATE_SEARCH_PACKAGE_NAME";
-  sourcePath: string;
-}
-
-export type ActionTypes = UpdateDependencyName | SearchPackageName;
+export type ActionTypes = UpdateSearchParams;
 
 export type Dispatch = React.Dispatch<ActionTypes>;

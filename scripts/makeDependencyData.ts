@@ -43,7 +43,7 @@ const main = async () => {
         packageName: store.packageJson[libFileName].name || "",
         latest: store.packageJson[libFileName].version || "",
         description: store.packageJson[libFileName].description || "",
-        sourceUrl: store.repository[libFileName].sourceUrl,
+        sourcePath: store.repository[libFileName].sourceUrl,
         repoName: store.repository[libFileName].repoName,
         repoUrl: store.repository[libFileName].repoUrl,
         createdAt: extractPackageJsonResult.createdAt,
@@ -77,7 +77,7 @@ const main = async () => {
           required: usedPackageJson.devDependencies[libFileName],
         });
       }
-      if (dependencySet.libraries.findIndex(library => library.sourceUrl === lib.sourceUrl) === -1) {
+      if (dependencySet.libraries.findIndex(library => library.sourcePath === lib.sourcePath) === -1) {
         dependencySet.libraries.push(lib);
       }
     });

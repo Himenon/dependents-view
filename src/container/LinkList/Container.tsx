@@ -8,10 +8,10 @@ export const generateProps = (store: Store): LinkList.Props => {
     },
     links: store.libraries.map(lib => {
       return {
-        href: process.env.PUBLIC_PATH + "?sourcePath=" + lib.sourceUrl,
+        href: process.env.PUBLIC_PATH + "?name=" + lib.packageName,
         children: lib.packageName,
         onClick: () => {
-          store.setTargetDependencySourceUrl(lib.sourceUrl);
+          store.updateSearchParams(lib.packageName);
         },
       };
     }),

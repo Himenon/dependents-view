@@ -26,7 +26,7 @@ export interface DependencyData {
 export interface Library {
   packageName: string;
   latest: string;
-  sourceUrl: string;
+  sourcePath: string;
   description: string;
   repoName: string;
   repoUrl: string;

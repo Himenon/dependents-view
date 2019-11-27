@@ -21,8 +21,8 @@ const useQuery = () => {
 
 export const Container = () => {
   const query = useQuery();
-  const sourcePath = query.get("sourcePath") || undefined;
-  const reducers = Domain.createReducers(sourcePath);
+  const name = query.get("name") || undefined;
+  const reducers = Domain.createReducers({ name });
   const createReducer = <T, S>([state, dispatch]: [T, S]): { state: T; dispatch: S } => ({ state, dispatch });
   const domainStores: Domain.Stores = {
     app: createReducer(React.useReducer(...reducers.app)),
