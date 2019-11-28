@@ -22,7 +22,7 @@ export const filterRepoName = (inputRepoName: string | undefined, dependencySet:
   };
 };
 
-export const filterPackageName = (inputName: string | undefined, dependencySet: DependencySet): DependencySet => {
+export const filterIncludedPackageName = (inputName: string | undefined, dependencySet: DependencySet): DependencySet => {
   if (!inputName || inputName === "") {
     return dependencySet;
   }
@@ -30,5 +30,16 @@ export const filterPackageName = (inputName: string | undefined, dependencySet: 
   return {
     meta: dependencySet.meta,
     libraries: dependencySet.libraries.filter(lib => lib.package.name.toUpperCase().indexOf(filterName) > -1),
+  };
+};
+
+export const filterExactlyPackageName = (inputName: string | undefined, dependencySet: DependencySet): DependencySet => {
+  if (!inputName || inputName === "") {
+    return dependencySet;
+  }
+  const filterName = inputName.toUpperCase();
+  return {
+    meta: dependencySet.meta,
+    libraries: dependencySet.libraries.filter(lib => lib.package.name.toUpperCase() === filterName),
   };
 };

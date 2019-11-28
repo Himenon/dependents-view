@@ -15,9 +15,7 @@ export interface Library {
   devDependencies: DetailDependencyData[];
 }
 
-export interface MenuItem {
-  name: string;
-}
+export type MenuItem = OriginLibrary;
 
 export interface Menu {
   items: MenuItem[];

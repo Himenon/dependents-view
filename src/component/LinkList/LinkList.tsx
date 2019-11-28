@@ -1,10 +1,11 @@
 import * as React from "react";
 import { classNames } from "@app/style";
-import { Box, Heading, HeadingProps, Link, LinkProps } from "@primer/components";
+import { Box, Heading, HeadingProps } from "@primer/components";
+import * as DetailLink from "../DetailLink/DetailLink";
 
 export interface LinkListProps {
   heading: HeadingProps;
-  links: LinkProps[];
+  links: DetailLink.Props[];
 }
 
 export const LinkList = ({ links, heading }: LinkListProps) => {
@@ -15,7 +16,7 @@ export const LinkList = ({ links, heading }: LinkListProps) => {
         {links.map((link, idx) => {
           return (
             <div key={`link-list-${idx}`} className={classNames("col-4 float-left p-2")}>
-              <Link {...link} />
+              <DetailLink.Component {...link} />
             </div>
           );
         })}

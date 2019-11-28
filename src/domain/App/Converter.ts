@@ -2,11 +2,7 @@ import { DependencySet, OriginLibrary, View } from "@app/interface";
 
 export const convertDepsDataSetToLibraries = (depsDataSet: DependencySet): View.Menu => {
   return {
-    items: depsDataSet.libraries.map(lib => {
-      return {
-        name: lib.package.name,
-      };
-    }),
+    items: depsDataSet.libraries,
   };
 };
 

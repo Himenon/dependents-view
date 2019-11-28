@@ -10,13 +10,15 @@ export const generateProps = (store: Store): SideNavigation.Props => {
         store.updatePageParams(undefined);
       },
     },
-    links: store.menu.items.map(lib => {
+    detailLinks: store.menu.items.map(lib => {
       return {
-        href: process.env.PUBLIC_PATH + "?name=" + lib.name,
-        children: lib.name,
-        replace: false,
-        onClick: () => {
-          store.updatePageParams(lib.name);
+        link: {
+          href: process.env.PUBLIC_PATH + "?name=" + lib.package.name,
+          children: lib.package.name,
+          replace: false,
+          onClick: () => {
+            store.updatePageParams(lib.package.name);
+          },
         },
       };
     }),
