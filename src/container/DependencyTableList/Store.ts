@@ -1,8 +1,8 @@
 import * as Domain from "@app/domain";
 
 export const generateStore = (domainStores: Domain.Stores) => {
-  const searchParams = domainStores.app.state.searchParams;
-  if (!searchParams.name) {
+  const pageParams = domainStores.app.state.pageParams;
+  if (!pageParams.name) {
     return undefined;
   }
   const library = domainStores.app.state.displayLibrary;

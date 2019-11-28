@@ -6,6 +6,11 @@ export interface UpdateSearchParams {
   searchParams: State["searchParams"];
 }
 
-export type ActionTypes = UpdateSearchParams;
+export interface UpdatePageParams {
+  type: "UPDATE_PAGE_PARAMS";
+  pageParams: State["pageParams"];
+}
+
+export type ActionTypes = UpdateSearchParams | UpdatePageParams;
 
 export type Dispatch = React.Dispatch<ActionTypes>;

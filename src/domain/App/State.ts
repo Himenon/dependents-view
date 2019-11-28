@@ -11,6 +11,9 @@ export interface State {
     repo?: string;
     path?: string;
   };
+  pageParams: {
+    name?: string;
+  };
 }
 
 export const DEFAULT_STATE: State = {
@@ -23,4 +26,5 @@ export const DEFAULT_STATE: State = {
   menu: { items: [] },
   displayLibrary: undefined,
   searchParams: {},
+  pageParams: {},
 };

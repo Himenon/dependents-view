@@ -7,7 +7,7 @@ export const generateProps = (store: Store): SideNavigation.Props => {
       children: "Package List",
       href: "/",
       onClick: () => {
-        store.updateSearchParams(undefined);
+        store.updatePageParams(undefined);
       },
     },
     links: store.menu.items.map(lib => {
@@ -16,7 +16,7 @@ export const generateProps = (store: Store): SideNavigation.Props => {
         children: lib.name,
         replace: false,
         onClick: () => {
-          store.updateSearchParams(lib.name);
+          store.updatePageParams(lib.name);
         },
       };
     }),
@@ -24,7 +24,7 @@ export const generateProps = (store: Store): SideNavigation.Props => {
       type: "text",
       placeholder: "search package name",
       "aria-label": "search package name",
-      value: store.searchPackageName.name,
+      value: store.searchParams.name,
       onChange: event => {
         store.updateSearchParams(event.currentTarget.value);
       },

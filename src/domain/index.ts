@@ -13,8 +13,12 @@ export interface Stores {
   };
 }
 
-export const createReducers = (dataSet: DependencySet, searchParams?: App.State["searchParams"]): Reducers => {
+export const createReducers = (
+  dataSet: DependencySet,
+  pageParams: App.State["pageParams"],
+  searchParams?: App.State["searchParams"],
+): Reducers => {
   return {
-    app: App.createReducer(dataSet, searchParams),
+    app: App.createReducer(dataSet, pageParams, searchParams),
   };
 };

@@ -11,7 +11,7 @@ export const generateProps = (store: Store): LinkList.Props => {
         href: process.env.PUBLIC_PATH + "?name=" + lib.name,
         children: lib.name,
         onClick: () => {
-          store.updateSearchParams(lib.name);
+          store.updatePageParams(lib.name);
         },
       };
     }),
