@@ -1,9 +1,12 @@
-import { DependencySet } from "@app/interface";
-const depsDataSet = require("@app/dataSet/deps.json");
+import { DependencySet, OriginLibrary, View } from "@app/interface";
+import { convertDepsDataSetToLibraries, convertLibrariesToDisplayLibrary } from "./Converter";
+
+const depsDataSet: DependencySet = require("@app/dataSet/deps.json");
 
 export interface State {
-  deps: DependencySet;
-  displayDependencyList: DependencySet;
+  originDataSet: DependencySet;
+  menu: View.Menu;
+  displayLibrary: View.Library | OriginLibrary[] | undefined;
   searchParams: {
     name?: string;
     host?: string;
@@ -14,7 +17,8 @@ export interface State {
 }
 
 export const DEFAULT_STATE: State = {
-  deps: depsDataSet,
-  displayDependencyList: depsDataSet,
+  originDataSet: depsDataSet,
+  menu: convertDepsDataSetToLibraries(depsDataSet),
+  displayLibrary: convertLibrariesToDisplayLibrary(depsDataSet),
   searchParams: {},
 };

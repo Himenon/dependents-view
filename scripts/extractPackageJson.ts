@@ -1,9 +1,9 @@
 import * as Octokit from "@octokit/rest";
 import * as fs from "fs";
-import { PackageJson } from "type-fest";
 import * as path from "path";
 import { ExtractPackageJson } from "@app/interface";
 import * as Constants from "./Constants";
+import * as url from "native-url";
 
 export const wait = async (ms: number) => {
   const promise = new Promise(resolve => {
@@ -20,14 +20,18 @@ const github = new Octokit({
   auth: process.env.GITHUB_TOKEN,
 });
 
-export const getRepository = async (username: string) => {
-  const list = await github.repos.listForUser({
-    username,
+export const getRepository = async (org: string) => {
+  // https://developer.github.com/v3/repos/
+  const list = await github.repos.listForOrg({
+    org,
     per_page: 100,
   });
-
   const data: Octokit.ReposListForOrgResponseItem[] = list.data;
   return data.filter(data => !data.archived && !Constants.EXCLUDE_REPOSITORY_FULL_NAMES.includes(data.full_name));
+};
+
+export const encodeBase64 = (base64string: string): string => {
+  return Buffer.from(base64string, "base64").toString();
 };
 
 export const searchPackageJson = async (repo: string) => {
@@ -46,21 +50,14 @@ export const searchPackageJson = async (repo: string) => {
   return list.data;
 };
 
-export const getPackageJson = async (owner: string, repo: string, filepath: string): Promise<{ data: PackageJson; htmlUrl: string }> => {
-  const contents = await github.repos.getContents({
+export const getPackageJsonData = async (owner: string, repo: string, filepath: string) => {
+  // https://developer.github.com/v3/repos/contents/
+  const content = await github.repos.getContents({
     owner,
     repo,
     path: filepath,
   });
-  const d = contents.data as Octokit.ReposGetContentsResponse;
-  if (Array.isArray(d)) {
-    throw new TypeError("配列なので受け付けません");
-  }
-  const buffer = Buffer.from(d.content || "", d.encoding as "base64");
-  return {
-    data: JSON.parse(buffer.toString()),
-    htmlUrl: d.html_url,
-  };
+  return content.data;
 };
 
 const main = async () => {
@@ -73,18 +70,36 @@ const main = async () => {
         if (path.basename(source.path) !== "package.json") {
           return;
         }
-        const pkgJson = await getPackageJson(owner, repo.name, source.path);
+        const pkgJsonData = await getPackageJsonData(owner, repo.name, source.path);
+        if (Array.isArray(pkgJsonData)) {
+          throw new TypeError("配列なので受け付けません");
+        }
         const basename = path.join(owner, repo.name, source.path);
+        const hostname = url.parse(repo.url).hostname;
+        if (!hostname) {
+          throw new Error("hostnameが見つかりません");
+        }
         result.repositories.push({
-          filename: basename,
-          sourceUrl: pkgJson.htmlUrl,
-          repoName: repo.full_name,
-          repoUrl: repo.html_url,
-          branch: repo.default_branch,
+          meta: {
+            hostname,
+          },
+          source: {
+            filename: basename,
+            url: pkgJsonData.html_url,
+            path: pkgJsonData.path,
+          },
+          repo: {
+            owner: repo.owner.login,
+            name: repo.name,
+            url: repo.html_url,
+            fullName: repo.full_name,
+            branch: repo.default_branch,
+          },
         });
         const filename = path.join(Constants.SAVE_DIR, basename);
         fs.mkdirSync(path.dirname(filename), { recursive: true });
-        fs.writeFileSync(filename, JSON.stringify(pkgJson.data, null, 2), { encoding: "utf-8" });
+        const content = JSON.parse(encodeBase64(pkgJsonData.content || ""));
+        fs.writeFileSync(filename, JSON.stringify(content, null, 2), { encoding: "utf-8" });
       }
     }
   });

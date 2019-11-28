@@ -1,9 +1,12 @@
-export interface GitHubRepository {
-  filename: string; // localのfilename
-  sourceUrl: string; // GHE上のpath
-  repoName: string; // repository name
-  repoUrl: string; // repositoryのURL
-  branch: string; // branch
+export * from "./common";
+
+import { OriginLibrary, GitHubRepository, PackageJsonData, RepoData, SourceData } from "./common";
+
+import * as View from "./view";
+export { View };
+
+export interface ExtractMeta {
+  hostname: string;
 }
 
 export interface ExtractPackageJson {
@@ -11,30 +14,9 @@ export interface ExtractPackageJson {
   repositories: GitHubRepository[];
 }
 
-export interface DependencyData {
-  name: string; // package name
-  version: string;
-  repo: {
-    name: string;
-    url: string;
-  };
-  sourceUrl: string; // package.json path
-  branch: string; // check branch
-  required: string; // using version
-}
-
-export interface Library {
-  packageName: string;
-  latest: string;
-  sourcePath: string;
-  description: string;
-  repoName: string;
-  repoUrl: string;
-  createdAt: string;
-  dependencies: DependencyData[];
-  devDependencies: DependencyData[];
-}
-
 export interface DependencySet {
-  libraries: Library[];
+  meta: {
+    updatedAt: string;
+  };
+  libraries: OriginLibrary[];
 }

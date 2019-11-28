@@ -5,41 +5,39 @@ export const generateProps = (store: Store): DependencyTableList.Props | undefin
   if (!store) {
     return undefined;
   }
+  const library = store.library;
   return {
     packageDetail: {
       name: {
-        href: store.libraryUrl,
-        children: store.libraryDisplayName || "not selected",
+        href: library.source.url,
+        children: library.package.name || "not selected",
       },
       version: {
-        children: store.libraryVersion,
+        children: library.package.version,
       },
       description: {
-        children: store.libraryDescription,
+        children: library.package.description,
       },
       repository: {
-        href: store.repositoryUrl,
-        children: store.repositoryName,
-      },
-      updatedAt: {
-        children: store.updatedAt,
+        href: library.repo.url,
+        children: library.repo.fullName,
       },
     },
     dependenciesTable: {
       noDependenciesText: {
         children: "no dependencies",
       },
-      rows: store.deps.map(dep => {
+      rows: library.dependencies.map(dep => {
         return {
           name: {
-            children: dep.name,
-            href: dep.sourceUrl,
+            children: dep.package.name,
+            href: dep.source.url,
           },
           version: {
-            children: dep.version,
+            children: dep.package.version,
           },
           branch: {
-            children: dep.branch,
+            children: dep.repo.branch,
           },
           repo: {
             href: dep.repo.url,
@@ -55,17 +53,17 @@ export const generateProps = (store: Store): DependencyTableList.Props | undefin
       noDependenciesText: {
         children: "no devDependencies",
       },
-      rows: store.devDeps.map(dep => {
+      rows: library.devDependencies.map(dep => {
         return {
           name: {
-            children: dep.name,
-            href: dep.sourceUrl,
+            children: dep.package.name,
+            href: dep.source.url,
           },
           version: {
-            children: dep.version,
+            children: dep.package.version,
           },
           branch: {
-            children: dep.branch,
+            children: dep.repo.branch,
           },
           repo: {
             href: dep.repo.url,

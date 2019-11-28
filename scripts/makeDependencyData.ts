@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import { PackageJson } from "type-fest";
-import { ExtractPackageJson, GitHubRepository, Library, DependencySet } from "@app/interface";
+import { ExtractPackageJson, GitHubRepository, OriginLibrary as Library, DependencySet } from "@app/interface";
 import * as Constants from "./Constants";
 
 export interface Store {
@@ -9,12 +9,12 @@ export interface Store {
     [url: string]: PackageJson;
   };
   repository: {
-    [name: string]: GitHubRepository;
+    [url: string]: GitHubRepository;
   };
 }
 
 export const getJson = (filename: string) => {
-  return require(filename);
+  return JSON.parse(fs.readFileSync(filename, { encoding: "utf-8" }));
 };
 
 const main = async () => {
@@ -22,62 +22,56 @@ const main = async () => {
     packageJson: {},
     repository: {},
   };
-  const extractPackageJsonResult: ExtractPackageJson = getJson(Constants.PKG_DETAILS);
-  extractPackageJsonResult.repositories.map(async stock => {
-    const fullPath = path.join(Constants.SAVE_DIR, stock.filename);
-    const pkg = getJson(fullPath);
-    store.packageJson[stock.filename] = pkg;
-    store.repository[stock.filename] = stock;
+  const details: ExtractPackageJson = getJson(Constants.PKG_DETAILS);
+  details.repositories.map(async detail => {
+    const fullPath = path.join(Constants.SAVE_DIR, detail.source.filename);
+    const pkg: PackageJson = getJson(fullPath);
+    store.packageJson[detail.source.url] = pkg;
+    store.repository[detail.source.url] = detail;
   });
 
   const dependencySet: DependencySet = {
+    meta: {
+      updatedAt: new Date().toISOString(),
+    },
     libraries: [],
   };
 
-  Object.keys(store.packageJson).forEach(libFileName => {
+  Object.keys(store.packageJson).forEach(libSourceUrl => {
     Object.values(store.packageJson).forEach(usedPackageJson => {
-      if (usedPackageJson.name === libFileName) {
+      const pkgJson = store.packageJson[libSourceUrl];
+      if (usedPackageJson.name === pkgJson.name) {
         return;
       }
+      const pkgName = pkgJson.name || "";
+      const repoData = store.repository[libSourceUrl];
       const lib: Library = {
-        packageName: store.packageJson[libFileName].name || "",
-        latest: store.packageJson[libFileName].version || "",
-        description: store.packageJson[libFileName].description || "",
-        sourcePath: store.repository[libFileName].sourceUrl,
-        repoName: store.repository[libFileName].repoName,
-        repoUrl: store.repository[libFileName].repoUrl,
-        createdAt: extractPackageJsonResult.createdAt,
+        package: {
+          name: pkgJson.name || "",
+          version: pkgJson.version || "",
+          description: pkgJson.description || "",
+        },
         dependencies: [],
         devDependencies: [],
+        ...repoData,
       };
       const usingPkgName = usedPackageJson.name || "";
-      if (usedPackageJson.dependencies && usedPackageJson.dependencies[libFileName] && store.repository[usingPkgName]) {
+      if (usedPackageJson.dependencies && usedPackageJson.dependencies[pkgName] && store.repository[usingPkgName]) {
         lib.dependencies.push({
           name: usingPkgName,
           version: usedPackageJson.version || "",
-          branch: store.repository[usingPkgName].branch,
-          sourceUrl: store.repository[usingPkgName].sourceUrl,
-          repo: {
-            name: store.repository[usingPkgName].repoName,
-            url: store.repository[usingPkgName].repoUrl,
-          },
-          required: usedPackageJson.dependencies[libFileName],
+          required: usedPackageJson.dependencies[pkgName],
         });
       }
-      if (usedPackageJson.devDependencies && usedPackageJson.devDependencies[libFileName] && store.repository[usingPkgName]) {
+      if (usedPackageJson.devDependencies && usedPackageJson.devDependencies[pkgName] && store.repository[usingPkgName]) {
         lib.devDependencies.push({
           name: usingPkgName,
           version: usedPackageJson.version || "",
-          branch: store.repository[usingPkgName].branch,
-          sourceUrl: store.repository[usingPkgName].sourceUrl,
-          repo: {
-            name: store.repository[usingPkgName].repoName,
-            url: store.repository[usingPkgName].repoUrl,
-          },
-          required: usedPackageJson.devDependencies[libFileName],
+          required: usedPackageJson.devDependencies[pkgName],
         });
       }
-      if (dependencySet.libraries.findIndex(library => library.sourcePath === lib.sourcePath) === -1) {
+      // // 重複削除
+      if (dependencySet.libraries.findIndex(library => lib.source.url === library.source.url) === -1) {
         dependencySet.libraries.push(lib);
       }
     });

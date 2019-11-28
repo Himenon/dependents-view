@@ -5,20 +5,12 @@ export const generateStore = (domainStores: Domain.Stores) => {
   if (!searchParams.name) {
     return undefined;
   }
-  const dep = domainStores.app.state.deps.libraries.find(lib => lib.packageName === searchParams.name);
-  if (!dep) {
+  const library = domainStores.app.state.displayLibrary;
+  if (!library || Array.isArray(library)) {
     return undefined;
   }
   return {
-    libraryDisplayName: dep.packageName,
-    libraryVersion: dep.latest === "" ? "Not found" : dep.latest,
-    libraryUrl: dep.sourcePath,
-    libraryDescription: dep.description,
-    repositoryUrl: dep.repoUrl,
-    repositoryName: dep.repoName,
-    updatedAt: dep.createdAt,
-    deps: dep.dependencies,
-    devDeps: dep.devDependencies,
+    library,
   };
 };
 

@@ -2,11 +2,10 @@ import * as Domain from "@app/domain";
 
 export const generateStore = (domainStores: Domain.Stores) => {
   return {
-    depList: Object.keys(domainStores.app.state.deps),
+    menu: domainStores.app.state.menu,
     updateSearchParams: (name: string) => {
       domainStores.app.dispatch({ type: "UPDATE_SEARCH_PARAMS", searchParams: { name } });
     },
-    libraries: domainStores.app.state.displayDependencyList.libraries,
   };
 };
 

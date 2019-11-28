@@ -1,6 +1,13 @@
 import { ActionTypes } from "./Action";
 import { DEFAULT_STATE, State } from "./State";
-import { searchParamsFilter } from "./Filter";
+import { filterPackageName } from "./Filter";
+import { convertDepsDataSetToLibraries, convertLibrariesToDisplayLibrary } from "./Converter";
+
+export const searchParamsFilter = (state: State, searchParams: State["searchParams"]): State => {
+  const dataSet = filterPackageName(searchParams.name, state.originDataSet);
+  const displayLibrary = convertLibrariesToDisplayLibrary(dataSet);
+  return { ...state, searchParams, menu: convertDepsDataSetToLibraries(dataSet), displayLibrary };
+};
 
 export const reducer = (state: State, action: ActionTypes): State => {
   switch (action.type) {

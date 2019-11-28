@@ -10,13 +10,13 @@ export const generateProps = (store: Store): SideNavigation.Props => {
         store.updateSearchParams(undefined);
       },
     },
-    links: store.libraries.map(lib => {
+    links: store.menu.items.map(lib => {
       return {
-        href: process.env.PUBLIC_PATH + "?name=" + lib.packageName,
-        children: lib.packageName,
+        href: process.env.PUBLIC_PATH + "?name=" + lib.name,
+        children: lib.name,
         replace: false,
         onClick: () => {
-          store.updateSearchParams(lib.packageName);
+          store.updateSearchParams(lib.name);
         },
       };
     }),
