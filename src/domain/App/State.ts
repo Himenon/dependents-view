@@ -1,7 +1,4 @@
 import { DependencySet, OriginLibrary, View } from "@app/interface";
-import { convertDepsDataSetToLibraries, convertLibrariesToDisplayLibrary } from "./Converter";
-
-const depsDataSet: DependencySet = require("@app/dataSet/deps.json");
 
 export interface State {
   originDataSet: DependencySet;
@@ -17,8 +14,13 @@ export interface State {
 }
 
 export const DEFAULT_STATE: State = {
-  originDataSet: depsDataSet,
-  menu: convertDepsDataSetToLibraries(depsDataSet),
-  displayLibrary: convertLibrariesToDisplayLibrary(depsDataSet),
+  originDataSet: {
+    meta: {
+      updatedAt: "",
+    },
+    libraries: [],
+  },
+  menu: { items: [] },
+  displayLibrary: undefined,
   searchParams: {},
 };

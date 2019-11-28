@@ -1,3 +1,4 @@
+import { DependencySet } from "@app/interface";
 import * as App from "./App";
 export { App };
 
@@ -12,8 +13,8 @@ export interface Stores {
   };
 }
 
-export const createReducers = (searchParams?: App.State["searchParams"]): Reducers => {
+export const createReducers = (dataSet: DependencySet, searchParams?: App.State["searchParams"]): Reducers => {
   return {
-    app: App.createReducer(searchParams),
+    app: App.createReducer(dataSet, searchParams),
   };
 };

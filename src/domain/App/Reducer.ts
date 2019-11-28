@@ -21,6 +21,9 @@ export const reducer = (state: State, action: ActionTypes): State => {
 
 export type Reducer = [typeof reducer, State];
 
-export const createReducer = (searchParams: State["searchParams"] = DEFAULT_STATE.searchParams): Reducer => {
-  return [reducer, { ...DEFAULT_STATE, searchParams }];
+export const createReducer = (
+  originDataSet: State["originDataSet"],
+  searchParams: State["searchParams"] = DEFAULT_STATE.searchParams,
+): Reducer => {
+  return [reducer, searchParamsFilter({ ...DEFAULT_STATE, originDataSet }, searchParams)];
 };
