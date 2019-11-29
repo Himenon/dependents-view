@@ -12,7 +12,7 @@ export const generateProps = (store: Store): SideNavigation.Props => {
       },
     },
     detailLinks: store.menu.items.map(lib => {
-      const queryParams = "?" + QueryParams.appendQueryParams("name", lib.package.name);
+      const queryParams = "?" + QueryParams.appendQueryParams({ name: lib.package.name });
       return {
         link: {
           href: process.env.PUBLIC_PATH + queryParams,
