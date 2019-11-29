@@ -7,10 +7,9 @@ interface PackageDetailProps {
   version: TextProps;
   description: TextProps;
   repository: LinkProps;
-  updatedAt: TextProps;
 }
 
-const PackageDetail = ({ name, version, description, repository, updatedAt }: PackageDetailProps) => {
+const PackageDetail = ({ name, version, description, repository }: PackageDetailProps) => {
   return (
     <>
       <Heading mb={2}>
@@ -33,10 +32,6 @@ const PackageDetail = ({ name, version, description, repository, updatedAt }: Pa
             <dt>Repository</dt>
             <dd>
               <Link {...repository} target="_blank" />
-            </dd>
-            <dt>Updated at</dt>
-            <dd>
-              <Link {...updatedAt} target="_blank" />
             </dd>
           </dl>
         </Box>

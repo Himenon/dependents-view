@@ -1,12 +1,16 @@
 import * as Domain from "@app/domain";
 
 export const generateStore = (domainStores: Domain.Stores) => {
+  const library = domainStores.app.state.displayLibrary;
+  if (library) {
+    return undefined;
+  }
   return {
-    depList: Object.keys(domainStores.app.state.deps),
-    setTargetDependency: (name: string) => {
-      domainStores.app.dispatch({ type: "UPDATE_DEPENDENCY_NAME", name });
+    menu: domainStores.app.state.pageMenu,
+    updatePageParams: (name: string | undefined) => {
+      domainStores.app.dispatch({ type: "UPDATE_PAGE_PARAMS", pageParams: { name } });
     },
-    displayDependencyList: domainStores.app.state.displayDependencyList,
+    canShowDetail: domainStores.app.state.pageMenu.items.length < 5,
   };
 };
 

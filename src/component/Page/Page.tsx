@@ -7,7 +7,7 @@ import { classNames } from "@app/style";
 
 interface PageProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   dependencyTableList?: DependencyTableList.Props;
-  linkList: LinkList.Props;
+  linkList?: LinkList.Props;
   sideNavigation: SideNavigation.Props;
 }
 
@@ -17,8 +17,10 @@ const Page = ({ dependencyTableList, sideNavigation, linkList, ...props }: PageP
       <Box className={classNames("border d-flex lex-wrap height-fit")}>
         <SideNavigation.Component {...sideNavigation} />
         <Box className={classNames("position-relative")} style={{ left: 360, width: "calc(100% - 360px)" }}>
-          <Box className={classNames("p-5 border flex-auto position-relative")}>
-            {dependencyTableList ? <DependencyTableList.Component {...dependencyTableList} /> : <LinkList.Component {...linkList} />}
+          <Box className={classNames("p-5 border flex-auto position-relative overflow-y-hidden")}>
+            {linkList && <LinkList.Component {...linkList} />}
+            {dependencyTableList && <DependencyTableList.Component {...dependencyTableList} />}
+            {!linkList && !dependencyTableList && "Not found."}
           </Box>
         </Box>
       </Box>

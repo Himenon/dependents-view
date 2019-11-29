@@ -1,8 +1,8 @@
 import * as path from "path";
 
-export const GITHUB_BASE_URL = "https://api.github.com";
+export const GITHUB_BASE_URL = undefined;
 
-export const OWNERS = [];
+export const OWNERS = ["Himenon"];
 
 export const SAVE_DIR = path.join(__dirname, "../src", "dataSet");
 

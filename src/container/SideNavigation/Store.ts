@@ -2,14 +2,13 @@ import * as Domain from "@app/domain";
 
 export const generateStore = (domainStores: Domain.Stores) => {
   return {
-    depList: Object.keys(domainStores.app.state.deps),
-    setTargetDependency: (name: string | undefined) => {
-      domainStores.app.dispatch({ type: "UPDATE_DEPENDENCY_NAME", name });
+    menu: domainStores.app.state.sideBarMenu,
+    searchParams: domainStores.app.state.searchParams,
+    updatePageParams: (name: string | undefined) => {
+      domainStores.app.dispatch({ type: "UPDATE_PAGE_PARAMS", pageParams: { name } });
     },
-    displayDependencyList: domainStores.app.state.displayDependencyList,
-    searchPackageName: domainStores.app.state.searchPackageName,
-    updateSearchPackageName: (name: string) => {
-      domainStores.app.dispatch({ type: "UPDATE_SEARCH_PACKAGE_NAME", name });
+    updateSearchParams: (name: string | undefined) => {
+      domainStores.app.dispatch({ type: "UPDATE_SEARCH_PARAMS", searchParams: { name } });
     },
   };
 };

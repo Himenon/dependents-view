@@ -1,5 +1,6 @@
 import { Store } from "./Store";
 import { SideNavigation } from "@app/component";
+import { QueryParams } from "@app/infra";
 
 export const generateProps = (store: Store): SideNavigation.Props => {
   return {
@@ -7,16 +8,21 @@ export const generateProps = (store: Store): SideNavigation.Props => {
       children: "Package List",
       href: "/",
       onClick: () => {
-        store.setTargetDependency(undefined);
+        store.updatePageParams(undefined);
       },
     },
-    links: Object.keys(store.displayDependencyList).map(name => {
+    detailLinks: store.menu.items.map(lib => {
+      const params = QueryParams.generateBaseQueryParams();
+      params["name"] = lib.package.name;
+      const queryParams = "?" + QueryParams.appendQueryParams(params);
       return {
-        href: process.env.PUBLIC_PATH + "?name=" + name,
-        children: name,
-        replace: false,
-        onClick: () => {
-          store.setTargetDependency(name);
+        link: {
+          href: process.env.PUBLIC_PATH + queryParams,
+          children: lib.package.name,
+          replace: false,
+          onClick: () => {
+            store.updatePageParams(lib.package.name);
+          },
         },
       };
     }),
@@ -24,9 +30,9 @@ export const generateProps = (store: Store): SideNavigation.Props => {
       type: "text",
       placeholder: "search package name",
       "aria-label": "search package name",
-      value: store.searchPackageName,
+      value: store.searchParams.name,
       onChange: event => {
-        store.updateSearchPackageName(event.currentTarget.value);
+        store.updateSearchParams(event.currentTarget.value);
       },
     },
   };

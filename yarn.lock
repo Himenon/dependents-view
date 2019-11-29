@@ -8827,10 +8827,10 @@ nanomatch@^1.2.9:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-native-url@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/native-url/-/native-url-0.2.1.tgz#af34e7ade00049a880dbd476f6fc80ffbb4095ef"
-  integrity sha512-1wtxUvRw9yfnqbP/gI7rWnRx3boHosUXz2d+EahWafx86gG0EdxbglqhA6hSKybteH6uLLN867yNmh4cnqndvw==
+native-url@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/native-url/-/native-url-0.2.3.tgz#29dfc0d7b2b396af493872ccc4b7d974e72ecb9a"
+  integrity sha512-AeSn0qFkS9EVPExWw/mN8le1HUj09LXovYPBTT9rnr9300OTvz+MZoEzIM1F7iPROsT2UNMzM+UsJCTPDqaL1g==
   dependencies:
     querystring "^0.2.0"
 

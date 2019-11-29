@@ -1,16 +1,24 @@
-import { DependencySet } from "@app/interface";
-const depsDataSet = require("@app/dataSet/deps.json");
+import { DependencySet, View } from "@app/interface";
 
 export interface State {
-  deps: DependencySet;
-  displayDependencyList: DependencySet;
-  name: string | undefined;
-  searchPackageName: string | undefined;
+  originDataSet: DependencySet;
+  sideBarMenu: View.Menu;
+  pageMenu: View.Menu;
+  displayLibrary: View.Library | undefined;
+  searchParams: View.SearchParams;
+  pageParams: View.PageParams;
 }
 
 export const DEFAULT_STATE: State = {
-  deps: depsDataSet,
-  displayDependencyList: depsDataSet,
-  name: undefined,
-  searchPackageName: undefined,
+  originDataSet: {
+    meta: {
+      updatedAt: "",
+    },
+    libraries: [],
+  },
+  sideBarMenu: { items: [] },
+  pageMenu: { items: [] },
+  displayLibrary: undefined,
+  searchParams: {},
+  pageParams: {},
 };

@@ -1,39 +1,18 @@
-export interface StockInfo {
-  filename: string; // localのfilename
-  sourceUrl: string; // GHE上のpath
-  repoName: string; // repository name
-  repoUrl: string; // repositoryのURL
-  branch: string; // branch
-}
+export * from "./common";
 
-export interface ExtractPackageJsonResult {
+import { OriginLibrary, GitHubRepository, PackageJsonData, RepoData, SourceData } from "./common";
+
+import * as View from "./view";
+export { View };
+
+export interface ExtractPackageJson {
   createdAt: string;
-  packageJsonList: StockInfo[];
-}
-
-export interface DependencyData {
-  name: string; // package name
-  version: string;
-  repo: {
-    name: string;
-    url: string;
-  };
-  sourceUrl: string; // package.json path
-  branch: string; // check branch
-  required: string; // using version
+  repositories: GitHubRepository[];
 }
 
 export interface DependencySet {
-  [pkgName: string]:
-    | {
-        latest: string;
-        sourceUrl: string;
-        description: string;
-        repoName: string;
-        repoUrl: string;
-        createdAt: string;
-        dependencies: DependencyData[];
-        devDependencies: DependencyData[];
-      }
-    | undefined;
+  meta: {
+    updatedAt: string;
+  };
+  libraries: OriginLibrary[];
 }

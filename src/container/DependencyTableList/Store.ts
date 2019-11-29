@@ -1,24 +1,18 @@
 import * as Domain from "@app/domain";
 
 export const generateStore = (domainStores: Domain.Stores) => {
-  const name = domainStores.app.state.name;
-  if (!name) {
+  const pageParams = domainStores.app.state.pageParams;
+  const library = domainStores.app.state.displayLibrary;
+  if (!library) {
     return undefined;
   }
-  const dep = domainStores.app.state.deps[name];
-  if (!dep) {
+  // 1つに絞り込めた場合でもpageParamsのnameと異なる場合は非表示にする
+  if (pageParams.name !== library.package.name) {
     return undefined;
   }
+  console.log("絞り込めたよ");
   return {
-    libraryDisplayName: name,
-    libraryVersion: dep.latest === "" ? "Not found" : dep.latest,
-    libraryUrl: dep.sourceUrl,
-    libraryDescription: dep.description,
-    repositoryUrl: dep.repoUrl,
-    repositoryName: dep.repoName,
-    updatedAt: dep.createdAt,
-    deps: dep.dependencies,
-    devDeps: dep.devDependencies,
+    library,
   };
 };
 
