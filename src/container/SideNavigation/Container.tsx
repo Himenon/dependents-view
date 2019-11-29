@@ -6,7 +6,7 @@ export const generateProps = (store: Store): SideNavigation.Props => {
   return {
     heading: {
       children: "Package List",
-      href: "/",
+      href: process.env.PUBLIC_PATH,
       onClick: () => {
         store.updatePageParams(undefined);
       },
