@@ -26,9 +26,8 @@ export interface SourceData {
 
 export interface OriginDependencyData {
   name: string;
-  version: string;
-  // url: string;
   required: string;
+  url: string;
 }
 
 export interface OriginLibrary extends GitHubRepository {

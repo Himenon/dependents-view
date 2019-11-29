@@ -64,9 +64,9 @@ const main = async () => {
   const result: ExtractPackageJson = { createdAt: new Date().toISOString(), repositories: [] };
   const promises = Constants.OWNERS.map(async owner => {
     const repos = await getRepository(owner);
-    for (const repo of repos) {
+    const promises2 = repos.map(async repo => {
       const data = await searchPackageJson(repo.full_name);
-      for (const source of data.items) {
+      const promises3 = data.items.map(async source => {
         if (path.basename(source.path) !== "package.json") {
           return;
         }
@@ -100,8 +100,10 @@ const main = async () => {
         fs.mkdirSync(path.dirname(filename), { recursive: true });
         const content = JSON.parse(encodeBase64(pkgJsonData.content || ""));
         fs.writeFileSync(filename, JSON.stringify(content, null, 2), { encoding: "utf-8" });
-      }
-    }
+      });
+      return Promise.all(promises3);
+    });
+    return Promise.all(promises2);
   });
   await Promise.all(promises).then(() => {
     console.log(`Save: ${Constants.PKG_DETAILS}`);

@@ -1,17 +1,43 @@
 import * as fs from "fs";
 import * as path from "path";
 import { PackageJson } from "type-fest";
-import { ExtractPackageJson, GitHubRepository, OriginLibrary as Library, DependencySet } from "@app/interface";
+import { ExtractPackageJson, GitHubRepository, OriginDependencyData, DependencySet } from "@app/interface";
 import * as Constants from "./Constants";
 
-export interface Store {
-  packageJson: {
-    [url: string]: PackageJson;
-  };
-  repository: {
-    [url: string]: GitHubRepository;
-  };
+export interface Detail {
+  packageJson: PackageJson;
+  repository: GitHubRepository;
 }
+
+export interface Store {
+  details: Detail[];
+}
+
+export const getDeps = (pkgJsonName: string, details: Detail[], type: "dependencies" | "devDependencies"): OriginDependencyData[] => {
+  return details
+    .filter(detail => {
+      // 自身は排除
+      if (pkgJsonName === detail.packageJson.name) {
+        return false;
+      }
+      const dep: PackageJson["dependencies"] = detail.packageJson[type];
+      if (dep) {
+        return Object.keys(dep).includes(pkgJsonName);
+      }
+      return false;
+    })
+    .map(detail => {
+      const dep: PackageJson["dependencies"] = detail.packageJson[type];
+      if (!dep) {
+        throw new Error("dependenciesがだめ");
+      }
+      return {
+        name: detail.packageJson.name || "",
+        required: dep[pkgJsonName] || "",
+        url: detail.repository.source.url,
+      };
+    });
+};
 
 export const getJson = (filename: string) => {
   return JSON.parse(fs.readFileSync(filename, { encoding: "utf-8" }));
@@ -19,15 +45,16 @@ export const getJson = (filename: string) => {
 
 const main = async () => {
   const store: Store = {
-    packageJson: {},
-    repository: {},
+    details: [],
   };
   const details: ExtractPackageJson = getJson(Constants.PKG_DETAILS);
   details.repositories.map(async detail => {
     const fullPath = path.join(Constants.SAVE_DIR, detail.source.filename);
     const pkg: PackageJson = getJson(fullPath);
-    store.packageJson[detail.source.url] = pkg;
-    store.repository[detail.source.url] = detail;
+    store.details.push({
+      packageJson: pkg,
+      repository: detail,
+    });
   });
 
   const dependencySet: DependencySet = {
@@ -37,47 +64,26 @@ const main = async () => {
     libraries: [],
   };
 
-  Object.keys(store.packageJson).forEach(libSourceUrl => {
-    Object.values(store.packageJson).forEach(usedPackageJson => {
-      const pkgJson = store.packageJson[libSourceUrl];
-      if (usedPackageJson.name === pkgJson.name) {
-        return;
-      }
-      const pkgName = pkgJson.name || "";
-      const repoData = store.repository[libSourceUrl];
-      const lib: Library = {
-        package: {
-          name: pkgJson.name || "",
-          version: pkgJson.version || "",
-          description: pkgJson.description || "",
-        },
-        dependencies: [],
-        devDependencies: [],
-        ...repoData,
-      };
-      const usingPkgName = usedPackageJson.name || "";
-      if (usedPackageJson.dependencies && usedPackageJson.dependencies[pkgName] && store.repository[usingPkgName]) {
-        lib.dependencies.push({
-          name: usingPkgName,
-          version: usedPackageJson.version || "",
-          required: usedPackageJson.dependencies[pkgName],
-        });
-      }
-      if (usedPackageJson.devDependencies && usedPackageJson.devDependencies[pkgName] && store.repository[usingPkgName]) {
-        lib.devDependencies.push({
-          name: usingPkgName,
-          version: usedPackageJson.version || "",
-          required: usedPackageJson.devDependencies[pkgName],
-        });
-      }
-      // // 重複削除
-      if (dependencySet.libraries.findIndex(library => lib.source.url === library.source.url) === -1) {
-        dependencySet.libraries.push(lib);
-      }
+  store.details.forEach(detail => {
+    const repo = detail.repository;
+    const pkgJson = detail.packageJson;
+    const pkgJsonName = pkgJson.name;
+    if (!pkgJsonName || pkgJsonName === "") {
+      return;
+    }
+    dependencySet.libraries.push({
+      package: {
+        name: pkgJsonName,
+        version: pkgJson.version || "",
+        description: pkgJson.description || "",
+      },
+      dependencies: getDeps(pkgJsonName, store.details, "dependencies"),
+      devDependencies: getDeps(pkgJsonName, store.details, "devDependencies"),
+      ...repo,
     });
   });
   fs.writeFileSync(Constants.DEPS_DATA, JSON.stringify(dependencySet, null, 2), { encoding: "utf-8" });
-  console.log("保存しました");
+  console.log(`Save: ${Constants.DEPS_DATA}`);
 };
 
 main().catch(console.error);
