@@ -1,6 +1,6 @@
 import { ActionTypes } from "./Action";
 import { DEFAULT_STATE, State } from "./State";
-import { convertDepsDataSetToLibraries, convertLibrariesToDisplayLibrary, convertSearchParamToQueryParams } from "./Converter";
+import { generatePageMenu, convertLibrariesToDisplayLibrary, convertSearchParamToQueryParams } from "./Converter";
 import { searchFromInput, searchFromPageLoad } from "./Query";
 import { QueryParams } from "@app/infra";
 import { uniqueMenuItem } from "./Filter";
@@ -9,11 +9,10 @@ export const reducer = (state: State, action: ActionTypes): State => {
   switch (action.type) {
     case "UPDATE_SEARCH_PARAMS": {
       const dataSet = searchFromInput(state.originDataSet, action.searchParams);
-      const baseMenu = convertDepsDataSetToLibraries(dataSet);
-      const menu = uniqueMenuItem(baseMenu);
-      const pageMenu = baseMenu;
+      const pageMenu = generatePageMenu(dataSet);
+      const sideBarMenu = uniqueMenuItem(pageMenu);
       QueryParams.updateQueryStringParameter("q", convertSearchParamToQueryParams(action.searchParams));
-      return { ...state, menu, pageMenu, searchParams: action.searchParams };
+      return { ...state, sideBarMenu, pageMenu, searchParams: action.searchParams };
     }
     case "UPDATE_PAGE_PARAMS": {
       return { ...state, pageParams: action.pageParams };
@@ -30,14 +29,16 @@ export const createReducer = (
   pageParams: State["pageParams"] = DEFAULT_STATE.pageParams,
   searchParams: State["searchParams"] = DEFAULT_STATE.searchParams,
 ): Reducer => {
+  // ページ用のクエリで検索
   const dataSet = searchFromPageLoad(originDataSet, pageParams);
-  const pageMenu = convertDepsDataSetToLibraries(dataSet);
-
+  const pageMenu = generatePageMenu(dataSet);
+  // サイドメニュー用に検索
   const dataSetForMenu = searchFromInput(originDataSet, searchParams);
-  const menu = uniqueMenuItem(convertDepsDataSetToLibraries(dataSetForMenu));
+  const sideBarMenu = uniqueMenuItem(generatePageMenu(dataSetForMenu));
 
   const displayLibrary = convertLibrariesToDisplayLibrary(pageParams, originDataSet.libraries);
+  console.log({ displayLibrary });
 
-  const state: State = { ...DEFAULT_STATE, menu, displayLibrary, originDataSet, pageParams, searchParams, pageMenu };
+  const state: State = { ...DEFAULT_STATE, sideBarMenu, displayLibrary, originDataSet, pageParams, searchParams, pageMenu };
   return [reducer, state];
 };

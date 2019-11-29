@@ -2,7 +2,7 @@ import { DependencySet, View } from "@app/interface";
 
 export interface State {
   originDataSet: DependencySet;
-  menu: View.Menu;
+  sideBarMenu: View.Menu;
   pageMenu: View.Menu;
   displayLibrary: View.Library | undefined;
   searchParams: View.SearchParams;
@@ -16,7 +16,7 @@ export const DEFAULT_STATE: State = {
     },
     libraries: [],
   },
-  menu: { items: [] },
+  sideBarMenu: { items: [] },
   pageMenu: { items: [] },
   displayLibrary: undefined,
   searchParams: {},

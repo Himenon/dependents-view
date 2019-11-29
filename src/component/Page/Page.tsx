@@ -20,6 +20,7 @@ const Page = ({ dependencyTableList, sideNavigation, linkList, ...props }: PageP
           <Box className={classNames("p-5 border flex-auto position-relative overflow-y-hidden")}>
             {linkList && <LinkList.Component {...linkList} />}
             {dependencyTableList && <DependencyTableList.Component {...dependencyTableList} />}
+            {!linkList && !dependencyTableList && "Not found."}
           </Box>
         </Box>
       </Box>

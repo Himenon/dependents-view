@@ -1,6 +1,9 @@
 import { DependencySet, OriginLibrary, OriginDependencyData, View } from "@app/interface";
 
-export const convertDepsDataSetToLibraries = (depsDataSet: DependencySet): View.Menu => {
+/**
+ * TODO ファイル移動
+ */
+export const generatePageMenu = (depsDataSet: DependencySet): View.Menu => {
   return {
     items: depsDataSet.libraries,
   };
@@ -25,14 +28,17 @@ export const convertOriginDependencyDataToDetailDependencyData = (
 };
 
 export const convertLibrariesToDisplayLibrary = (pageParams: View.PageParams, originLibraries: OriginLibrary[]): View.Library | undefined => {
+  console.log({
+    pageParams,
+  });
   const libraries = originLibraries.filter(lib => {
     return [
-      pageParams.name === lib.package.name,
-      pageParams.hostname === new URL(lib.repo.url).hostname,
-      pageParams.owner === lib.repo.owner,
-      pageParams.repo === lib.repo.name,
-      pageParams.path === lib.source.path,
-    ].some(Boolean);
+      pageParams.name ? pageParams.name === lib.package.name : true,
+      pageParams.hostname ? pageParams.hostname === new URL(lib.repo.url).hostname : true,
+      pageParams.owner ? pageParams.owner === lib.repo.owner : true,
+      pageParams.repo ? pageParams.repo === lib.repo.name : true,
+      pageParams.path ? pageParams.path === lib.source.path : true,
+    ].every(Boolean);
   });
   if (libraries.length !== 1) {
     return undefined;
