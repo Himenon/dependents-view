@@ -5,15 +5,6 @@ import { ExtractPackageJson } from "@app/interface";
 import * as Constants from "./Constants";
 import * as url from "native-url";
 
-export const wait = async (ms: number) => {
-  const promise = new Promise(resolve => {
-    setTimeout(() => {
-      resolve();
-    }, ms);
-  });
-  return promise;
-};
-
 const github = new Octokit({
   baseUrl: Constants.GITHUB_BASE_URL,
   // https://developer.github.com/v3/search/#rate-limit

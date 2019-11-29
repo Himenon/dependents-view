@@ -19,6 +19,7 @@
     "lint": "eslint -c ./.eslintrc.js 'src/**/*.{ts,tsx}'",
     "lint:fix": "yarn lint --fix",
     "make:dependency:data": "ts-node -P ./scripts/tsconfig.cli.json ./scripts/makeDependencyData.ts",
+    "make:fixture": "ts-node -P ./scripts/tsconfig.cli.json ./scripts/makeMockDependencyData.ts",
     "prettier": "prettier --config .prettierrc --write src/**/*",
     "publish:site": "ts-node -P ./scripts/tsconfig.cli.json ./scripts/publish.ts",
     "serve": "serve dist",
