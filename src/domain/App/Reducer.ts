@@ -37,7 +37,6 @@ export const createReducer = (
   const sideBarMenu = uniqueMenuItem(generatePageMenu(dataSetForMenu));
 
   const displayLibrary = convertLibrariesToDisplayLibrary(pageParams, originDataSet.libraries);
-  console.log({ displayLibrary });
 
   const state: State = { ...DEFAULT_STATE, sideBarMenu, displayLibrary, originDataSet, pageParams, searchParams, pageMenu };
   return [reducer, state];
