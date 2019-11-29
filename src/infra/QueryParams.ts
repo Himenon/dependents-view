@@ -26,8 +26,9 @@ export const updateQueryStringParameter = (key: keyof View.PageQueryParams, valu
 };
 
 export const generateBaseQueryParams = (): View.PageQueryParams => {
+  const searchParams = new URLSearchParams(window.location.search);
   return {
-    q: undefined,
+    q: searchParams.get("q") || undefined,
     name: undefined,
     hostname: undefined,
     owner: undefined,
