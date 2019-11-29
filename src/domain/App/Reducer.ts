@@ -13,7 +13,8 @@ export const reducer = (state: State, action: ActionTypes): State => {
       const baseMenu = convertDepsDataSetToLibraries(dataSet);
       const menu = uniqueMenuItem(baseMenu);
       const pageMenu = baseMenu;
-      const displayLibrary = isViewLibrary(state.displayLibrary) ? state.displayLibrary : convertLibrariesToDisplayLibrary(dataSet);
+      const result = convertLibrariesToDisplayLibrary(dataSet);
+      const displayLibrary = isViewLibrary(result) ? result : undefined;
       QueryParams.updateQueryStringParameter("q", convertSearchParamToQueryParams(action.searchParams));
       return { ...state, menu, pageMenu, displayLibrary, searchParams: action.searchParams };
     }
@@ -38,7 +39,9 @@ export const createReducer = (
   const dataSetForMenu = searchFromInput(originDataSet, searchParams);
   const menu = uniqueMenuItem(convertDepsDataSetToLibraries(dataSetForMenu));
 
-  const displayLibrary = convertLibrariesToDisplayLibrary(dataSet);
+  const result = convertLibrariesToDisplayLibrary(dataSet);
+  const displayLibrary = isViewLibrary(result) ? result : undefined;
+
   const state: State = { ...DEFAULT_STATE, menu, displayLibrary, originDataSet, pageParams, searchParams, pageMenu };
   return [reducer, state];
 };

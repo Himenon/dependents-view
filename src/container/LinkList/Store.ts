@@ -1,6 +1,10 @@
 import * as Domain from "@app/domain";
 
 export const generateStore = (domainStores: Domain.Stores) => {
+  const library = domainStores.app.state.displayLibrary;
+  if (library) {
+    return undefined;
+  }
   return {
     menu: domainStores.app.state.pageMenu,
     updatePageParams: (name: string | undefined) => {

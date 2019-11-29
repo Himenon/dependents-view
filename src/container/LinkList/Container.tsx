@@ -3,7 +3,10 @@ import { LinkList } from "@app/component";
 import { QueryParams } from "@app/infra";
 import { View } from "@app/interface";
 
-export const generateProps = (store: Store): LinkList.Props => {
+export const generateProps = (store: Store): LinkList.Props | undefined => {
+  if (!store) {
+    return undefined;
+  }
   return {
     heading: {
       children: "Package List",

@@ -1,7 +1,6 @@
-import { State } from "./State";
-import { View } from "@app/interface";
+import { View, OriginLibrary } from "@app/interface";
 
-export const isViewLibrary = (displayLibrary: State["displayLibrary"]): displayLibrary is View.Library => {
+export const isViewLibrary = (displayLibrary: View.Library | OriginLibrary[] | undefined): displayLibrary is View.Library => {
   if (!displayLibrary) {
     return false;
   }

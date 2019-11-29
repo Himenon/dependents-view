@@ -1,10 +1,10 @@
-import { DependencySet, OriginLibrary, View } from "@app/interface";
+import { DependencySet, View } from "@app/interface";
 
 export interface State {
   originDataSet: DependencySet;
   menu: View.Menu;
   pageMenu: View.Menu;
-  displayLibrary: View.Library | OriginLibrary[] | undefined;
+  displayLibrary: View.Library | undefined;
   searchParams: View.SearchParams;
   pageParams: View.PageParams;
 }
