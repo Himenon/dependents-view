@@ -1,4 +1,4 @@
-import { DependencySet, OriginLibrary, View } from "@app/interface";
+import { DependencySet, OriginLibrary, OriginDependencyData, View } from "@app/interface";
 
 export const convertDepsDataSetToLibraries = (depsDataSet: DependencySet): View.Menu => {
   return {
@@ -6,39 +6,45 @@ export const convertDepsDataSetToLibraries = (depsDataSet: DependencySet): View.
   };
 };
 
-export const convertLibrariesToDisplayLibrary = (depsDataSet: DependencySet): View.Library | OriginLibrary[] | undefined => {
-  const filterLibrary = (name: string) => depsDataSet.libraries.filter(lib => lib.devDependencies.some(dep => dep.name === name));
-  const filterLibrary2 = (name: string) => depsDataSet.libraries.filter(lib => lib.devDependencies.some(dep => dep.name === name));
-  if (depsDataSet.libraries.length === 0) {
+export const convertOriginDependencyDataToDetailDependencyData = (
+  deps: OriginDependencyData,
+  libraries: OriginLibrary[],
+): View.DetailDependencyData => {
+  const d = libraries.find(lib => {
+    return lib.package.name === deps.name && new URL(deps.url).hostname === new URL(lib.repo.url).hostname;
+  });
+  if (!d) {
+    throw new Error("Not found");
+  }
+  return {
+    required: deps.required,
+    source: d.source,
+    repo: d.repo,
+    package: d.package,
+  };
+};
+
+export const convertLibrariesToDisplayLibrary = (pageParams: View.PageParams, originLibraries: OriginLibrary[]): View.Library | undefined => {
+  const libraries = originLibraries.filter(lib => {
+    return [
+      pageParams.name === lib.package.name,
+      pageParams.hostname === new URL(lib.repo.url).hostname,
+      pageParams.owner === lib.repo.owner,
+      pageParams.repo === lib.repo.name,
+      pageParams.path === lib.source.path,
+    ].some(Boolean);
+  });
+  if (libraries.length !== 1) {
     return undefined;
   }
-  if (depsDataSet.libraries.length === 1) {
-    const target: OriginLibrary = depsDataSet.libraries[0];
-    const dependencies: View.Library["dependencies"] = filterLibrary(target.package.name).map(lib => {
-      return {
-        required: "",
-        package: lib.package,
-        source: lib.source,
-        repo: lib.repo,
-      };
-    });
-    const devDependencies: View.Library["devDependencies"] = filterLibrary2(target.package.name).map(lib => {
-      return {
-        required: "",
-        package: lib.package,
-        source: lib.source,
-        repo: lib.repo,
-      };
-    });
-    return {
-      package: target.package,
-      source: target.source,
-      repo: target.repo,
-      dependencies,
-      devDependencies,
-    };
-  }
-  return depsDataSet.libraries;
+  const mainLibrary = libraries[0];
+  const dependencies = mainLibrary.dependencies.map(deps => convertOriginDependencyDataToDetailDependencyData(deps, originLibraries));
+  const devDependencies = mainLibrary.devDependencies.map(deps => convertOriginDependencyDataToDetailDependencyData(deps, originLibraries));
+  return {
+    ...mainLibrary,
+    dependencies,
+    devDependencies,
+  };
 };
 
 /**

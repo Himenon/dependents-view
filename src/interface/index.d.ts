@@ -5,10 +5,6 @@ import { OriginLibrary, GitHubRepository, PackageJsonData, RepoData, SourceData 
 import * as View from "./view";
 export { View };
 
-export interface ExtractMeta {
-  hostname: string;
-}
-
 export interface ExtractPackageJson {
   createdAt: string;
   repositories: GitHubRepository[];

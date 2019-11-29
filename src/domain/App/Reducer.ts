@@ -1,7 +1,6 @@
 import { ActionTypes } from "./Action";
 import { DEFAULT_STATE, State } from "./State";
 import { convertDepsDataSetToLibraries, convertLibrariesToDisplayLibrary, convertSearchParamToQueryParams } from "./Converter";
-import { isViewLibrary } from "./Validation";
 import { searchFromInput, searchFromPageLoad } from "./Query";
 import { QueryParams } from "@app/infra";
 import { uniqueMenuItem } from "./Filter";
@@ -13,10 +12,8 @@ export const reducer = (state: State, action: ActionTypes): State => {
       const baseMenu = convertDepsDataSetToLibraries(dataSet);
       const menu = uniqueMenuItem(baseMenu);
       const pageMenu = baseMenu;
-      const result = convertLibrariesToDisplayLibrary(dataSet);
-      const displayLibrary = isViewLibrary(result) ? result : undefined;
       QueryParams.updateQueryStringParameter("q", convertSearchParamToQueryParams(action.searchParams));
-      return { ...state, menu, pageMenu, displayLibrary, searchParams: action.searchParams };
+      return { ...state, menu, pageMenu, searchParams: action.searchParams };
     }
     case "UPDATE_PAGE_PARAMS": {
       return { ...state, pageParams: action.pageParams };
@@ -39,8 +36,7 @@ export const createReducer = (
   const dataSetForMenu = searchFromInput(originDataSet, searchParams);
   const menu = uniqueMenuItem(convertDepsDataSetToLibraries(dataSetForMenu));
 
-  const result = convertLibrariesToDisplayLibrary(dataSet);
-  const displayLibrary = isViewLibrary(result) ? result : undefined;
+  const displayLibrary = convertLibrariesToDisplayLibrary(pageParams, originDataSet.libraries);
 
   const state: State = { ...DEFAULT_STATE, menu, displayLibrary, originDataSet, pageParams, searchParams, pageMenu };
   return [reducer, state];

@@ -1,16 +1,21 @@
 import { OriginLibrary, GitHubRepository, PackageJsonData, RepoData, SourceData } from "./common";
 
 export interface DetailDependencyData {
+  /** required version */
   required: string;
-  package: PackageJsonData;
+  /** From GitHubRepository */
   source: SourceData;
   repo: RepoData;
+  /** extends */
+  package: PackageJsonData;
 }
 
 export interface Library {
-  package: PackageJsonData;
-  source: SourceData;
+  /** GitHubRepository  */
   repo: RepoData;
+  source: SourceData;
+  /** extends  */
+  package: PackageJsonData;
   dependencies: DetailDependencyData[];
   devDependencies: DetailDependencyData[];
 }

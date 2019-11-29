@@ -1,3 +1,7 @@
+export interface ExtractMeta {
+  hostname: string;
+}
+
 export interface GitHubRepository {
   meta: ExtractMeta;
   source: SourceData;
@@ -30,7 +34,12 @@ export interface OriginDependencyData {
   url: string;
 }
 
-export interface OriginLibrary extends GitHubRepository {
+export interface OriginLibrary {
+  /** GitHubRepository  */
+  meta: ExtractMeta;
+  source: SourceData;
+  repo: RepoData;
+  /** extends */
   package: PackageJsonData;
   dependencies: OriginDependencyData[];
   devDependencies: OriginDependencyData[];
