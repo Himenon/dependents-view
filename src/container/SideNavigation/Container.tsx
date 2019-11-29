@@ -1,5 +1,6 @@
 import { Store } from "./Store";
 import { SideNavigation } from "@app/component";
+import { QueryParams } from "@app/infra";
 
 export const generateProps = (store: Store): SideNavigation.Props => {
   return {
@@ -11,9 +12,10 @@ export const generateProps = (store: Store): SideNavigation.Props => {
       },
     },
     detailLinks: store.menu.items.map(lib => {
+      const queryParams = "?" + QueryParams.appendQueryParams("name", lib.package.name);
       return {
         link: {
-          href: process.env.PUBLIC_PATH + "?name=" + lib.package.name,
+          href: process.env.PUBLIC_PATH + queryParams,
           children: lib.package.name,
           replace: false,
           onClick: () => {

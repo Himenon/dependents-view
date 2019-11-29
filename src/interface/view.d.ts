@@ -20,3 +20,11 @@ export type MenuItem = OriginLibrary;
 export interface Menu {
   items: MenuItem[];
 }
+
+export interface SearchParams {
+  name?: string;
+  host?: string;
+  owner?: string;
+  repo?: string;
+  path?: string;
+}

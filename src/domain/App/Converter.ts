@@ -40,3 +40,16 @@ export const convertLibrariesToDisplayLibrary = (depsDataSet: DependencySet): Vi
   }
   return depsDataSet.libraries;
 };
+
+/**
+ * @returns key1:value1+key2:value2+key3:value3 || ""
+ */
+export const convertSearchParamToQueryParams = (searchParams: View.SearchParams): string => {
+  if (Object.values(searchParams).every(value => !value || value === "")) {
+    return "";
+  }
+  const value = Object.keys(searchParams)
+    .map(key => `${key}:${searchParams[key]}`)
+    .join("+");
+  return value;
+};

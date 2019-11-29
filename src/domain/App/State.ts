@@ -3,14 +3,9 @@ import { DependencySet, OriginLibrary, View } from "@app/interface";
 export interface State {
   originDataSet: DependencySet;
   menu: View.Menu;
+  pageMenu: View.Menu;
   displayLibrary: View.Library | OriginLibrary[] | undefined;
-  searchParams: {
-    name?: string;
-    host?: string;
-    owner?: string;
-    repo?: string;
-    path?: string;
-  };
+  searchParams: View.SearchParams;
   pageParams: {
     name?: string;
   };
@@ -24,6 +19,7 @@ export const DEFAULT_STATE: State = {
     libraries: [],
   },
   menu: { items: [] },
+  pageMenu: { items: [] },
   displayLibrary: undefined,
   searchParams: {},
   pageParams: {},
