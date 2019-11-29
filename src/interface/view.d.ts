@@ -22,9 +22,20 @@ export interface Menu {
 }
 
 export interface SearchParams {
+  /** package name */
   name?: string;
-  host?: string;
+  /** hostname */
+  hostname?: string;
+  /** repository owner */
   owner?: string;
+  /** repository name */
   repo?: string;
+  /** repository file path */
   path?: string;
+}
+
+export type PageParams = SearchParams;
+
+export interface PageQueryParams extends SearchParams {
+  q?: string;
 }

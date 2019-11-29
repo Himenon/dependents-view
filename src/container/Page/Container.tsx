@@ -26,8 +26,12 @@ const useQuery = () => {
 export const Container = () => {
   const query = useQuery();
   const name = query.get("name") || undefined;
+  const owner = query.get("owner") || undefined;
+  const hostname = query.get("hostname") || undefined;
+  const repo = query.get("repo") || undefined;
+  const path = query.get("path") || undefined;
   const searchParams = Parser.parseStringSearchParams(query.get("q") || "");
-  const reducers = Domain.createReducers(depsDataSet, { name }, searchParams);
+  const reducers = Domain.createReducers(depsDataSet, { name, hostname, owner, repo, path }, searchParams);
   const createReducer = <T, S>([state, dispatch]: [T, S]): { state: T; dispatch: S } => ({ state, dispatch });
   const domainStores: Domain.Stores = {
     app: createReducer(React.useReducer(...reducers.app)),

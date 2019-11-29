@@ -6,9 +6,7 @@ export interface State {
   pageMenu: View.Menu;
   displayLibrary: View.Library | OriginLibrary[] | undefined;
   searchParams: View.SearchParams;
-  pageParams: {
-    name?: string;
-  };
+  pageParams: View.PageParams;
 }
 
 export const DEFAULT_STATE: State = {

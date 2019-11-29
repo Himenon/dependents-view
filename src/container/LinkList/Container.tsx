@@ -1,6 +1,7 @@
 import { Store } from "./Store";
 import { LinkList } from "@app/component";
 import { QueryParams } from "@app/infra";
+import { View } from "@app/interface";
 
 export const generateProps = (store: Store): LinkList.Props => {
   return {
@@ -8,7 +9,12 @@ export const generateProps = (store: Store): LinkList.Props => {
       children: "Package List",
     },
     links: store.menu.items.map(lib => {
-      const queryParams = "?" + QueryParams.appendQueryParams({ name: lib.package.name });
+      const params: View.PageQueryParams = QueryParams.generateBaseQueryParams();
+      params["name"] = lib.package.name;
+      if (store.canShowDetail) {
+        params["repo"] = lib.repo.name;
+      }
+      const queryParams = "?" + QueryParams.appendQueryParams(params);
       return {
         link: {
           href: process.env.PUBLIC_PATH + queryParams,

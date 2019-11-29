@@ -1,4 +1,4 @@
-import { DependencySet } from "@app/interface";
+import { DependencySet, View } from "@app/interface";
 
 export const filterFileName = (inputFileName: string | undefined, dependencySet: DependencySet): DependencySet => {
   if (!inputFileName) {
@@ -41,5 +41,12 @@ export const filterExactlyPackageName = (inputName: string | undefined, dependen
   return {
     meta: dependencySet.meta,
     libraries: dependencySet.libraries.filter(lib => lib.package.name.toUpperCase() === filterName),
+  };
+};
+
+export const uniqueMenuItem = (menu: View.Menu): View.Menu => {
+  const items = menu.items.filter((elem, index, self) => self.findIndex(s => s.package.name === elem.package.name) === index);
+  return {
+    items,
   };
 };
