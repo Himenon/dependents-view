@@ -16,6 +16,7 @@ export const generateProps = (store: Store): LinkList.Props | undefined => {
       params["name"] = lib.package.name;
       if (store.canShowDetail) {
         params["repo"] = lib.repo.name;
+        params["path"] = lib.source.path;
       }
       const queryParams = "?" + QueryParams.appendQueryParams(params);
       return {
