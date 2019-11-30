@@ -177,7 +177,7 @@ export const generateConfig = (isProduction: boolean): webpack.Configuration => 
       path: path.resolve(__dirname, "../dist"),
       publicPath,
     },
-    externals: {
+    externals: (isProduction || undefined) && {
       react: "React",
       "react-dom": "ReactDOM",
     },
