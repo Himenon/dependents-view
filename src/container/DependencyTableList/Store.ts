@@ -1,6 +1,6 @@
 import * as Domain from "@app/domain";
 
-export const generateStore = (domainStores: Domain.Stores) => {
+export const generateStore = (domainStores: Domain.App.Stores) => {
   const pageParams = domainStores.app.state.pageParams;
   const library = domainStores.app.state.displayLibrary;
   if (!library) {

@@ -1,6 +1,6 @@
 import * as Domain from "@app/domain";
 
-export const generateStore = (domainStores: Domain.Stores) => {
+export const generateStore = (domainStores: Domain.App.Stores) => {
   return {
     menu: domainStores.app.state.sideBarMenu,
     searchParams: domainStores.app.state.searchParams,

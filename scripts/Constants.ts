@@ -11,3 +11,5 @@ export const PKG_DETAILS = path.join(SAVE_DIR, "details.json");
 export const DEPS_DATA = path.join(SAVE_DIR, "deps.json");
 
 export const EXCLUDE_REPOSITORY_FULL_NAMES = [""];
+
+export const RANKING_DATA = path.join(SAVE_DIR, "ranking.json");
