@@ -3,20 +3,22 @@ import { TopPage } from "@app/component";
 
 const generateProps = (): TopPage.Props => {
   return {
-    links: [
-      {
-        to: "/",
-        children: "TOP",
-      },
-      {
-        to: "/packages",
-        children: "package list",
-      },
-      {
-        to: "/ranking",
-        children: "ranking",
-      },
-    ],
+    headerNavigation: {
+      links: [
+        {
+          to: "/",
+          children: "TOP",
+        },
+        {
+          to: "/packages",
+          children: "package list",
+        },
+        {
+          to: "/ranking",
+          children: "ranking",
+        },
+      ],
+    },
   };
 };
 

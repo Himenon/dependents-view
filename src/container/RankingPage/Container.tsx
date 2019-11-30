@@ -8,6 +8,22 @@ const depsDataSet: RankingDataSet = require("@app/dataSet/ranking.json");
 
 const generateProps = (store: Store): RankingPage.Props => {
   return {
+    headerNavigation: {
+      links: [
+        {
+          to: "/",
+          children: "TOP",
+        },
+        {
+          to: "/packages",
+          children: "package list",
+        },
+        {
+          to: "/ranking",
+          children: "ranking",
+        },
+      ],
+    },
     dataSet: store.dataSet,
   };
 };

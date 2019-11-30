@@ -2,14 +2,17 @@ import * as React from "react";
 import { BaseStyles, Box } from "@primer/components";
 import { classNames } from "@app/style";
 import { RankingDataSet } from "@app/interface";
+import * as HeaderNavigation from "../HeaderNavigation/HeaderNavigation";
 
 interface RankingPageProps {
+  headerNavigation: HeaderNavigation.Props;
   dataSet: RankingDataSet;
 }
 
-const RankingPage = ({ dataSet }: RankingPageProps) => {
+const RankingPage = ({ headerNavigation, dataSet }: RankingPageProps) => {
   return (
     <BaseStyles>
+      <HeaderNavigation.Component {...headerNavigation} />
       <Box className={classNames("border d-flex lex-wrap height-fit")}>
         <ul>
           {dataSet.list.map((item, idx) => {

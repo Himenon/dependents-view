@@ -13,6 +13,22 @@ const depsDataSet: DependencySet = require("@app/dataSet/deps.json");
 
 const generateProps = (store: Store): Page.Props => {
   return {
+    headerNavigation: {
+      links: [
+        {
+          to: "/",
+          children: "TOP",
+        },
+        {
+          to: "/packages",
+          children: "package list",
+        },
+        {
+          to: "/ranking",
+          children: "ranking",
+        },
+      ],
+    },
     dependencyTableList: DependencyTableList.generateProps(store.dependencyTableList),
     sideNavigation: SidebarNavigation.generateProps(store.sideNavigation),
     linkList: LinkList.generateProps(store.linkList),

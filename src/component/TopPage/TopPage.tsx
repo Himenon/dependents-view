@@ -1,24 +1,15 @@
 import * as React from "react";
-import { classNames } from "@app/style";
-import { BaseStyles, Box } from "@primer/components";
-import { Link, LinkProps } from "react-router-dom";
+import { BaseStyles } from "@primer/components";
+import * as HeaderNavigation from "../HeaderNavigation/HeaderNavigation";
 
 export interface TopPageProps {
-  links: LinkProps[];
+  headerNavigation: HeaderNavigation.Props;
 }
 
-export const TopPage = ({ links }: TopPageProps) => {
+export const TopPage = ({ headerNavigation }: TopPageProps) => {
   return (
     <BaseStyles>
-      <Box className={classNames("border d-flex lex-wrap height-fit")}>
-        <ul>
-          {links.map((link, idx) => (
-            <li key={`${idx}.${link.to}`}>
-              <Link {...link} />
-            </li>
-          ))}
-        </ul>
-      </Box>
+      <HeaderNavigation.Component {...headerNavigation} />
     </BaseStyles>
   );
 };
