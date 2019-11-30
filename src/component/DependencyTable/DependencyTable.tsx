@@ -28,22 +28,22 @@ const DependencyTable = ({ rows, noDependenciesText, ...props }: DependencyTable
       <th scope="col">Branch</th>
     </tr>
   );
-  const TableData = rows.map(row => {
+  const TableData = rows.map((row, idx) => {
     return (
-      <tr>
-        <td>
+      <tr key={`dep-${idx}`}>
+        <td key="name">
           <Link {...row.name} target="_blank" />
         </td>
-        <td>
+        <td key="required">
           <Text {...row.required} />
         </td>
-        <td>
+        <td key="repo">
           <Link {...row.repo} target="_blank" />
         </td>
-        <td>
+        <td key="version">
           <Text {...row.version} />
         </td>
-        <td>
+        <td key="branch">
           <Text {...row.branch} />
         </td>
       </tr>

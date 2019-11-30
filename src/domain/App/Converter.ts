@@ -28,9 +28,6 @@ export const convertOriginDependencyDataToDetailDependencyData = (
 };
 
 export const convertLibrariesToDisplayLibrary = (pageParams: View.PageParams, originLibraries: OriginLibrary[]): View.Library | undefined => {
-  console.log({
-    pageParams,
-  });
   const libraries = originLibraries.filter(lib => {
     return [
       pageParams.name ? pageParams.name === lib.package.name : true,

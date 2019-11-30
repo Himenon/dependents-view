@@ -6,7 +6,7 @@ export const AppRouter = () => {
   return (
     <Router hashType="noslash">
       <Switch>
-        <Route key="/packages" path="/packages" basename={process.env.PUBLIC_PATH}>
+        <Route key="/packages/" path="/packages/:owner?/:name?" basename={process.env.PUBLIC_PATH}>
           <Page.Container />
         </Route>
         <Route key="/ranking" path="/ranking" basename={process.env.PUBLIC_PATH}>

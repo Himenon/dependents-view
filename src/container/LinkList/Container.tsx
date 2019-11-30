@@ -13,15 +13,15 @@ export const generateProps = (store: Store): LinkList.Props | undefined => {
     },
     links: store.menu.items.map(lib => {
       const params: View.PageQueryParams = QueryParams.generateBaseQueryParams();
-      params["name"] = lib.package.name;
       if (store.canShowDetail) {
         params["repo"] = lib.repo.name;
         params["path"] = lib.source.path;
       }
       const queryParams = "?" + QueryParams.appendQueryParams(params);
+      const to = "/packages/" + lib.package.name + queryParams;
       return {
         link: {
-          href: process.env.PUBLIC_PATH + queryParams,
+          to,
           children: lib.package.name,
           onClick: () => {
             store.updatePageParams(lib.package.name);

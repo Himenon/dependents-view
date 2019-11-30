@@ -8,7 +8,8 @@ export const generateStore = (domainStores: Domain.App.Stores) => {
       domainStores.app.dispatch({ type: "UPDATE_PAGE_PARAMS", pageParams: { name } });
     },
     updateSearchParams: (name: string | undefined) => {
-      domainStores.app.dispatch({ type: "UPDATE_SEARCH_PARAMS", searchParams: { name } });
+      const searchParams = { name };
+      domainStores.app.dispatch({ type: "UPDATE_SEARCH_PARAMS", searchParams });
     },
   };
 };

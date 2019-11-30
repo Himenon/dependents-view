@@ -10,7 +10,6 @@ export const generateStore = (domainStores: Domain.App.Stores) => {
   if (pageParams.name !== library.package.name) {
     return undefined;
   }
-  console.log("絞り込めたよ");
   return {
     library,
   };

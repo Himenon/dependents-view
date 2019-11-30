@@ -1,10 +1,10 @@
-import { DependencySet } from "@app/interface";
+import { DependencySet, View } from "@app/interface";
 import { State } from "./State";
 import { Reducer, createReducer } from "./Reducer";
 import { Dispatch } from "./Action";
 
 export interface Reducers {
-  app: Reducer;
+  app: (hooks: View.Hooks) => Reducer;
 }
 
 export interface Stores {

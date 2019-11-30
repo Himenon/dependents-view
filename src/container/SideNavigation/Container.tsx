@@ -13,11 +13,11 @@ export const generateProps = (store: Store): SideNavigation.Props => {
     },
     detailLinks: store.menu.items.map(lib => {
       const params = QueryParams.generateBaseQueryParams();
-      params["name"] = lib.package.name;
       const queryParams = "?" + QueryParams.appendQueryParams(params);
+      const to = "/packages/" + lib.package.name + queryParams;
       return {
         link: {
-          href: process.env.PUBLIC_PATH + queryParams,
+          to,
           children: lib.package.name,
           replace: false,
           onClick: () => {

@@ -1,4 +1,5 @@
 import { OriginLibrary, GitHubRepository, PackageJsonData, RepoData, SourceData } from "./common";
+import { useHistory } from "react-router-dom";
 
 export interface DetailDependencyData {
   /** required version */
@@ -43,4 +44,8 @@ export type PageParams = SearchParams;
 
 export interface PageQueryParams extends SearchParams {
   q?: string;
+}
+
+export interface Hooks {
+  history: ReturnType<typeof useHistory>;
 }
