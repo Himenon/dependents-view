@@ -24,7 +24,17 @@ export const generateProps = (store: Store): LinkList.Props | undefined => {
           to,
           children: lib.package.name,
           onClick: () => {
-            store.updatePageParams(lib.package.name);
+            store.updatePageParams(
+              store.canShowDetail
+                ? {
+                    name: lib.package.name,
+                    repo: lib.repo.name,
+                    path: lib.source.path,
+                  }
+                : {
+                    name: lib.package.name,
+                  },
+            );
           },
         },
         detail: (store.canShowDetail || undefined) && {

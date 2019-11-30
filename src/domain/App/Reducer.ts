@@ -17,11 +17,10 @@ export const reducer = (hooks: View.Hooks) => (state: State, action: ActionTypes
       return { ...state, sideBarMenu, pageMenu, searchParams: action.searchParams };
     }
     case "UPDATE_PAGE_PARAMS": {
-      const pageParams = { ...state.pageParams, ...action.pageParams };
       const dataSet = searchFromPageLoad(state.originDataSet, action.pageParams);
       const pageMenu = generatePageMenu(dataSet);
-      const displayLibrary = convertLibrariesToDisplayLibrary(pageParams, state.originDataSet.libraries);
-      return { ...state, pageMenu, displayLibrary, pageParams };
+      const displayLibrary = convertLibrariesToDisplayLibrary(action.pageParams, state.originDataSet.libraries);
+      return { ...state, pageMenu, displayLibrary, pageParams: action.pageParams };
     }
     default:
       return state;

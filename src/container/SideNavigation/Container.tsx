@@ -6,7 +6,7 @@ export const generateProps = (store: Store): SideNavigation.Props => {
   return {
     heading: {
       children: "Package List",
-      href: process.env.PUBLIC_PATH,
+      to: "/packages",
       onClick: () => {
         store.updatePageParams(undefined);
       },
@@ -30,7 +30,6 @@ export const generateProps = (store: Store): SideNavigation.Props => {
       type: "text",
       placeholder: "search package name",
       "aria-label": "search package name",
-      value: store.searchParams.name,
       onChange: event => {
         store.updateSearchParams(event.currentTarget.value);
       },
