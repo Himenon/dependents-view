@@ -7,6 +7,9 @@ export { Page };
 import * as RankingPage from "./RankingPage/RankingPage";
 export { RankingPage };
 
+import * as TopPage from "./TopPage/TopPage";
+export { TopPage };
+
 import * as SideNavigation from "./SideNavigation/SideNavigation";
 export { SideNavigation };
 
