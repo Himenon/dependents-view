@@ -67,7 +67,7 @@ const main = async () => {
       const item: ResultItem = {
         package: pkg,
         repository: detail.repository,
-        required: dep[name],
+        required: devDep[name],
         usageType: "dev-dep",
       };
       if (name in result) {
