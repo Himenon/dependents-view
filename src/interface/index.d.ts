@@ -6,12 +6,20 @@ import * as View from "./view";
 export { View };
 
 export interface RankingPackageItem {
+  rank?: number;
   packageName: string;
   usageLibraries: Array<{
     packageName: string;
     required: string;
     usageType: "dep" | "dev-dep";
-    url: string;
+    repo: {
+      name: string;
+      url: string;
+    };
+    source: {
+      url: string;
+      path: string;
+    };
   }>;
 }
 

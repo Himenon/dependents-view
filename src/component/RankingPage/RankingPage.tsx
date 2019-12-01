@@ -17,7 +17,7 @@ const RankingPage = ({ headerNavigation, dataSet }: RankingPageProps) => {
         <table>
           <thead>
             <tr>
-              <td>Index</td>
+              <td>Rank</td>
               <td>PackageName</td>
               <td>Detail</td>
             </tr>
@@ -26,7 +26,7 @@ const RankingPage = ({ headerNavigation, dataSet }: RankingPageProps) => {
             {dataSet.list.map((item, idx) => {
               return (
                 <tr key={`${item.packageName}-${idx}`}>
-                  <td key="index">{idx + 1}</td>
+                  <td key="index">{item.rank}</td>
                   <td key="package-name">
                     <em>{item.packageName}</em>
                   </td>
@@ -39,11 +39,15 @@ const RankingPage = ({ headerNavigation, dataSet }: RankingPageProps) => {
                             return (
                               <tr key={`${lib.packageName}-${idx2}`}>
                                 <td>
-                                  <a href={lib.url} target="_blank">
+                                  <a href={lib.repo.url} target="_blank">
                                     {lib.packageName}
                                   </a>
                                 </td>
-                                <td>{lib.required}</td>
+                                <td>
+                                  <a href={lib.source.url} target="_blank">
+                                    {lib.required}
+                                  </a>
+                                </td>
                                 <td>{lib.usageType}</td>
                               </tr>
                             );

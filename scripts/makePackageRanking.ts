@@ -12,8 +12,8 @@ export interface Store {
 }
 
 export interface ResultItem {
-  packageName: string;
-  url: string;
+  package: PackageJson;
+  repository: GitHubRepository;
   required: string;
   usageType: "dep" | "dev-dep";
 }
@@ -51,8 +51,8 @@ const main = async () => {
     const devDep = pkg.devDependencies || {};
     Object.keys(dep).forEach(name => {
       const item: ResultItem = {
-        packageName: pkg.name || "",
-        url: detail.repository.repo.url,
+        package: pkg,
+        repository: detail.repository,
         required: dep[name],
         usageType: "dep",
       };
@@ -65,8 +65,8 @@ const main = async () => {
     });
     Object.keys(devDep).forEach(name => {
       const item: ResultItem = {
-        packageName: pkg.name || "",
-        url: detail.repository.repo.url,
+        package: pkg,
+        repository: detail.repository,
         required: dep[name],
         usageType: "dev-dep",
       };
@@ -84,14 +84,29 @@ const main = async () => {
       packageName: name,
       usageLibraries: items.map(item => {
         return {
-          packageName: item.packageName,
+          packageName: item.package.name || "",
           required: item.required,
           usageType: item.usageType,
-          url: item.url,
+          repo: {
+            name: item.repository.repo.fullName,
+            url: item.repository.repo.url,
+          },
+          source: {
+            url: item.repository.source.url,
+            path: item.repository.source.path,
+          },
         };
       }),
     });
   });
+
+  ranking.list = ranking.list
+    .sort((a, b) => {
+      return a.usageLibraries.length > b.usageLibraries.length ? -1 : 1;
+    })
+    .map((item, idx) => {
+      return { ...item, rank: idx + 1 };
+    });
 
   fs.writeFileSync(Constants.RANKING_DATA, JSON.stringify(ranking, null, 2), { encoding: "utf-8" });
   console.log(`Save: ${Constants.RANKING_DATA}`);
