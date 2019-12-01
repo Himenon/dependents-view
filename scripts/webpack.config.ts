@@ -138,6 +138,13 @@ export const generateConfig = (isProduction: boolean): webpack.Configuration => 
             chunks: "all",
             enforce: true,
           },
+          rankingDataSet: {
+            name: "rankingDataSet",
+            filename: "scripts/ranking.[chunkhash:10].js",
+            test: /ranking\.json/,
+            chunks: "all",
+            enforce: true,
+          },
         },
       },
     },
