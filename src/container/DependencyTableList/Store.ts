@@ -1,6 +1,6 @@
 import * as Domain from "@app/domain";
 
-export const generateStore = (domainStores: Domain.Stores) => {
+export const generateStore = (domainStores: Domain.App.Stores) => {
   const pageParams = domainStores.app.state.pageParams;
   const library = domainStores.app.state.displayLibrary;
   if (!library) {
@@ -10,7 +10,6 @@ export const generateStore = (domainStores: Domain.Stores) => {
   if (pageParams.name !== library.package.name) {
     return undefined;
   }
-  console.log("絞り込めたよ");
   return {
     library,
   };

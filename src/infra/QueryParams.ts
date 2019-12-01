@@ -20,16 +20,10 @@ export const appendQueryParams = (query: View.PageQueryParams): string => {
   return querystring.stringify(params);
 };
 
-export const updateQueryStringParameter = (key: keyof View.PageQueryParams, value: string): void => {
-  const q = appendQueryParams({ [key]: value });
-  history.replaceState(null, document.title, `?${q}`);
-};
-
 export const generateBaseQueryParams = (): View.PageQueryParams => {
   const searchParams = new URLSearchParams(window.location.search);
   return {
     q: searchParams.get("q") || undefined,
-    name: undefined,
     hostname: undefined,
     owner: undefined,
     repo: undefined,

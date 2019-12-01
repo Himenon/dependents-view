@@ -1,6 +1,7 @@
 import * as React from "react";
 import { classNames } from "@app/style";
-import { Link, LinkProps, Text, TextProps } from "@primer/components";
+import { Link, LinkProps } from "react-router-dom";
+import { Text, TextProps } from "@primer/components";
 
 export interface DetailLinkProps {
   link: LinkProps;
