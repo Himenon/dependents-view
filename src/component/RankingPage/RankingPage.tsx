@@ -13,32 +13,50 @@ const RankingPage = ({ headerNavigation, dataSet }: RankingPageProps) => {
   return (
     <BaseStyles>
       <HeaderNavigation.Component {...headerNavigation} />
-      <Box className={classNames("border d-flex lex-wrap height-fit")}>
-        <ul>
-          {dataSet.list.map((item, idx) => {
-            return (
-              <li key={`${item.packageName}-${idx}`}>
-                <p>
-                  <em>{item.packageName}</em>
-                </p>
-                <ul>
-                  {item.usageLibraries.map((lib, idx2) => {
-                    return (
-                      <li key={`${lib.packageName}-${idx2}`}>
-                        <p>{lib.packageName}</p>
-                        <p>
-                          <a href={lib.url} target="_blank">
-                            {lib.required}
-                          </a>
-                        </p>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </li>
-            );
-          })}
-        </ul>
+      <Box className={classNames("border d-flex lex-wrap height-fit markdown-body")}>
+        <table>
+          <thead>
+            <tr>
+              <td>Index</td>
+              <td>PackageName</td>
+              <td>Detail</td>
+            </tr>
+          </thead>
+          <tbody>
+            {dataSet.list.map((item, idx) => {
+              return (
+                <tr key={`${item.packageName}-${idx}`}>
+                  <td key="index">{idx + 1}</td>
+                  <td key="package-name">
+                    <em>{item.packageName}</em>
+                  </td>
+                  <td key="detail">
+                    <details className={classNames("details-overlay")}>
+                      <summary className={classNames("btn")}>More {item.usageLibraries.length} using</summary>
+                      <div className={classNames("border p-3 mt-2")}>
+                        <table>
+                          {item.usageLibraries.map((lib, idx2) => {
+                            return (
+                              <tr key={`${lib.packageName}-${idx2}`}>
+                                <td>
+                                  <a href={lib.url} target="_blank">
+                                    {lib.packageName}
+                                  </a>
+                                </td>
+                                <td>{lib.required}</td>
+                                <td>{lib.usageType}</td>
+                              </tr>
+                            );
+                          })}
+                        </table>
+                      </div>
+                    </details>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </Box>
     </BaseStyles>
   );
