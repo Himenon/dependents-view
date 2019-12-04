@@ -24,6 +24,14 @@ const generateProps = (store: Store): RankingPage.Props => {
         },
       ],
     },
+    searchInput: {
+      type: "text",
+      placeholder: "search package name",
+      "aria-label": "search package name",
+      onChange: event => {
+        store.updateSearchParams(event.currentTarget.value);
+      },
+    },
     dataSet: store.dataSet,
   };
 };
