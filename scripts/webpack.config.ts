@@ -47,14 +47,14 @@ export const generateConfig = (isProduction: boolean): webpack.Configuration => 
     },
   };
 
-  const cssLoaders: webpack.RuleSetUse = [
+  const cssLoaders = (isLocal: boolean): webpack.RuleSetUse[] => [
     {
       loader: "css-loader",
       options: {
         localsConvention: "camelCase",
         importLoaders: 2,
         modules: {
-          localIdentName: "___[local]___[hash:base64:5]",
+          localIdentName: isLocal ? "___[local]___[hash:base64:5]" : "[local]",
         },
       },
     },
@@ -198,6 +198,7 @@ export const generateConfig = (isProduction: boolean): webpack.Configuration => 
         "@app/style": appPath("./src/style/index.ts"),
         "@app/interface": appPath("./src/interface/index.d.ts"),
         "@app/dataSet": appPath("./src/dataSet/"),
+        "~@newtonjs/graph": appPath("node_modules/@newtonjs/graph"),
         React: appPath("node_modules/react"),
         ReactDOM: appPath("node_modules/react-dom"),
       },
@@ -211,7 +212,11 @@ export const generateConfig = (isProduction: boolean): webpack.Configuration => 
         },
         {
           test: /\.scss$/,
-          loaders: [isProduction ? MiniCssExtractPlugin.loader : "style-loader", ...cssLoaders].filter(Boolean) as webpack.RuleSetUse,
+          loaders: [isProduction ? MiniCssExtractPlugin.loader : "style-loader", ...cssLoaders(true)].filter(Boolean) as webpack.RuleSetUse,
+        },
+        {
+          test: /newton.css$/,
+          loaders: [isProduction ? MiniCssExtractPlugin.loader : "style-loader", ...cssLoaders(false)].filter(Boolean) as webpack.RuleSetUse,
         },
         {
           test: /\.js$/,
