@@ -1,5 +1,8 @@
 import * as React from "react";
 import { TopPage } from "@app/component";
+import { GraphData } from "@app/interface";
+
+const graphData: GraphData = require("@app/dataSet/graph.json");
 
 const generateProps = (): TopPage.Props => {
   return {
@@ -18,6 +21,9 @@ const generateProps = (): TopPage.Props => {
           children: "ranking",
         },
       ],
+    },
+    newtonGraph: {
+      data: graphData,
     },
   };
 };
