@@ -1,5 +1,8 @@
 import * as React from "react";
 import { TopPage } from "@app/component";
+import { GraphData } from "@app/interface";
+
+const graphData: GraphData = require("@app/dataSet/graph.json");
 
 const generateProps = (): TopPage.Props => {
   return {
@@ -20,19 +23,7 @@ const generateProps = (): TopPage.Props => {
       ],
     },
     newtonGraph: {
-      data: {
-        nodes: [
-          { id: "w", label: "Web Frontend" },
-          { id: "m", label: "Mobile Device" },
-          { id: "b", label: "Monolith Backend" },
-          { id: "d", label: "Database" },
-        ],
-        links: [
-          { source: "w", target: "b" },
-          { source: "m", target: "b" },
-          { source: "b", target: "d" },
-        ],
-      },
+      data: graphData,
     },
   };
 };

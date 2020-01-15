@@ -1,4 +1,5 @@
 export * from "./common";
+export * from "./graph";
 
 import { OriginLibrary, GitHubRepository, PackageJsonData, RepoData, SourceData } from "./common";
 
