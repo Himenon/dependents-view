@@ -35,6 +35,7 @@ export const searchPackageJson = async (repo: string) => {
   const q: string = Object.entries(query)
     .map(([k, v]) => `${k}:${v}`)
     .join("+");
+
   const list = await github.search.code({
     q,
   });

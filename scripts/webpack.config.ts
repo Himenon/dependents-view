@@ -110,7 +110,6 @@ export const generateConfig = (isProduction: boolean): webpack.Configuration => 
           lib: {
             name: "lib",
             chunks: "initial",
-            filename: "scripts/lib.[chunkhash:10].js",
             minChunks: 2,
             test: ({ resource: filePath, context: dirPath }, chunk) => {
               return [/src/].some(pattern => pattern.test(filePath));
@@ -120,27 +119,23 @@ export const generateConfig = (isProduction: boolean): webpack.Configuration => 
           vendor: {
             name: "vendor",
             chunks: "initial",
-            filename: "scripts/vendor.[chunkhash:10].js",
             test: /node_modules/,
             enforce: true,
           },
           styles: {
             name: "styles",
-            filename: "scripts/styles.[chunkhash:10].js",
             test: /\.scss$/,
             chunks: "all",
             enforce: true,
           },
           dataSet: {
             name: "dataSet",
-            filename: "scripts/dataSet.[chunkhash:10].js",
             test: /deps\.json/,
             chunks: "all",
             enforce: true,
           },
           rankingDataSet: {
             name: "rankingDataSet",
-            filename: "scripts/ranking.[chunkhash:10].js",
             test: /ranking\.json/,
             chunks: "all",
             enforce: true,
