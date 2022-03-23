@@ -13,12 +13,12 @@
     "commit": "npx git-cz",
     "depcruise": "depcruise --validate .dependency-cruiser.js src",
     "depcruise:html": "depcruise --validate --output-type err-html -f dependency-report.html .dependency-cruiser.js src",
-    "deploy": "yarn build && yarn publish:site",
+    "deploy": "pnpm build && pnpm publish:site",
     "extract:package-json:org": "ts-node -P ./scripts/tsconfig.cli.json ./scripts/extractPackageJsonFromOrg.ts",
     "extract:package-json:user": "ts-node -P ./scripts/tsconfig.cli.json ./scripts/extractPackageJsonFromUser.ts",
-    "format": "yarn lint --fix && prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,yaml,html,md,scss}\"",
+    "format": "pnpm lint --fix && prettier --write \"**/*.{ts,tsx,js,jsx,json,yml,yaml,html,md,scss}\"",
     "lint": "eslint -c ./.eslintrc.js 'src/**/*.{ts,tsx}'",
-    "lint:fix": "yarn lint --fix",
+    "lint:fix": "pnpm lint --fix",
     "make:dependency:data": "ts-node -P ./scripts/tsconfig.cli.json ./scripts/makeDependencyData.ts",
     "make:fixture": "ts-node -P ./scripts/tsconfig.cli.json ./scripts/makeMockDependencyData.ts",
     "make:ranking:data": "ts-node -P ./scripts/tsconfig.cli.json ./scripts/makePackageRanking.ts",
@@ -26,20 +26,15 @@
     "publish:site": "ts-node -P ./scripts/tsconfig.cli.json ./scripts/publish.ts",
     "serve": "serve dist",
     "start": "cross-env NODE_ENV=development ts-node -P ./scripts/tsconfig.cli.json ./scripts/develop.ts",
-    "test": "yarn test:jest && yarn depcruise",
+    "test": "pnpm test:jest && pnpm depcruise",
     "test:jest": "jest -c ./jest.config.json",
-    "test:jest:watch": "yarn test:jest --watch",
+    "test:jest:watch": "pnpm test:jest --watch",
     "version_up": "lerna version --yes"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
     }
   },
   "dependencies": {
