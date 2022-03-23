@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16]
-        os: [windows-latest, ubuntu-latest]
+        os: [ubuntu-latest]
 
     steps:
       - name: Setup Git Config
