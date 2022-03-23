@@ -36,7 +36,6 @@ export const searchPackageJson = async (repo: string) => {
     .map(([k, v]) => `${k}:${v}`)
     .join("+");
 
-  github.git.createTag();
   const list = await github.search.code({
     q,
   });
