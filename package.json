@@ -113,5 +113,10 @@
     "webpack-dev-server": "^3.9.0",
     "webpack-manifest-plugin": "^2.2.0",
     "webpack-notifier": "^1.8.0"
+  },
+  "engines": {
+    "npm": "forbidden, use pnpm",
+    "pnpm": ">=6",
+    "yarn": "forbidden, use pnpm"
   }
 }
